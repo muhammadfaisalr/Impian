@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "526907398758",
+    "project_id": "impian-7b2b5",
+    "storage_bucket": "impian-7b2b5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:526907398758:android:ce8de52f7cc3379f3aeba7",
+        "android_client_info": {
+          "package_name": "com.steadytech.impian"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "526907398758-24iok22pjh5kcrcilegob4m7qes6d0m9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVmty_4knMlLoErtqlOj4M0G9Ml6u1lRQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "526907398758-24iok22pjh5kcrcilegob4m7qes6d0m9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
