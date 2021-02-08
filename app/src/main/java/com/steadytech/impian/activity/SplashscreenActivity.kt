@@ -19,7 +19,7 @@ class SplashscreenActivity : AppCompatActivity() {
         this.init()
 
         Handler(Looper.myLooper()!!).postDelayed({
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, SigninActivity::class.java))
             finish()
         }, 3000L)
     }

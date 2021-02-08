@@ -9,7 +9,7 @@
     <color name="material_black">#014343</color>
     <color name="white">#FFFFFFFF</color>
     <color name="yellow_600">#fdd835</color>
-        <color name="yellow_800">#c49000</color>
+    <color name="yellow_800">#c49000</color>
     <color name="yellow_400">#ffff6b</color>
     <color name="background_primary">#F4F6FC</color>
     <color name="text_primary">#A3A3A0</color>

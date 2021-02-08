@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.SignupActivity">
+
+    <RelativeLayout
+        android:id="@+id/layoutGreetings"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="156dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/logo_rectangle" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:paddingTop="8dp"
+        android:id="@+id/linearFeature"
+        android:layout_width="match_parent"
+        android:layout_height="156dp"
+        android:background="@color/background_primary"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/layoutGreetings">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:layout_width="128dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_hello"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerInParent="true"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/image">
+
+
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mari Kita Mulai!"
+                android:textColor="@color/material_black"
+                android:textSize="24sp"
+                android:layout_gravity="top"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@id/textSubtitle"
+                android:text="Perubahan Untuk #MulaiRaihImpian"
+                android:layout_marginHorizontal="16dp"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/linearFeature">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="Nomor Telepon Kamu"
+            app:boxStrokeColor="@color/yellow_600"
+            app:hintTextColor="@color/yellow_800"
+            app:layout_constraintTop_toBottomOf="@id/linearFeature">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputNumberPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textCursorDrawable="@null" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="@string/input_your_name"
+            app:boxStrokeColor="@color/yellow_600"
+            app:hintTextColor="@color/yellow_800"
+            app:layout_constraintTop_toBottomOf="@id/linearFeature">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:textCursorDrawable="@null" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonSignin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:drawableEnd="@drawable/ic_right_arrow"
+            android:gravity="center"
+            android:text="@string/signup"
+            android:textColor="@color/black"
+            app:backgroundTint="@color/yellow_600"
+            app:cornerRadius="8dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_margin="16dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/textTitleSignin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sudah Punya Akun?" />
+
+        <TextView
+            android:foreground="?attr/selectableItemBackground"
+            android:textColor="@color/material_black"
+            android:layout_marginStart="8dp"
+            android:id="@+id/textSignin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Masuk Disini" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ class FontsHelper {
             fun regular(activity: Activity) : Typeface {
                 return Typeface.createFromAsset(activity.assets, "font/inter_regular.ttf")
             }
+
             fun medium(activity: Activity) : Typeface {
                 return Typeface.createFromAsset(activity.assets, "font/inter_medium.ttf")
             }

@@ -49,4 +49,8 @@
     <string name="subtile_update_your_goals">Ini Tidak Akan Menghapus Histori Tabungan Kamu, Lanjutkan?</string>
     <string name="ask_delete_saving_history">Hapus Histori Menabung?</string>
     <string name="subtitle_delete_saving_history">Ini Hanya Menghapus Data Terpilih, Tidak Menghapus Semuanya. Lanjutkan?</string>
+    <string name="welcome_greetings">Hai, Selamat Datang!</string>
+    <string name="signin_with_google">Masuk Menggunakan Google</string>
+    <string name="signin">Masuk</string>
+    <string name="signup">Daftar</string>
 </resources>

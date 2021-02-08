@@ -12,6 +12,7 @@ open class Wishlist(
      var description : String = "",
      var startDate : String = "",
      var endDate : String = "",
+     var owner : String = "",
      var reminderInterval : String = "",
      var isCompleted : Boolean = false
 ) : RealmObject()
