@@ -8,6 +8,9 @@ import android.widget.EditText
 import android.widget.TextView
 import com.google.android.material.button.MaterialButton
 import com.steadytech.impian.R
+import com.steadytech.impian.bottomsheet.OtpBottomSheetDialogFragment
+import com.steadytech.impian.helper.BottomSheets
+import com.steadytech.impian.helper.Constant
 import com.steadytech.impian.helper.FontsHelper
 
 class SigninActivity : AppCompatActivity(), View.OnClickListener {
@@ -68,7 +71,20 @@ class SigninActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun signin() {
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
+        if (this.inputNumberPhone.text.isEmpty()){
+            BottomSheets.error(
+                this.getString(R.string.phone_number_empty),
+                "",
+                useTitle = true,
+                useSubTitle = true,
+                buttonMessage = this.getString(R.string.ok),
+                TAG = SigninActivity::class.java.simpleName,
+                activity = this
+            )
+        }else{
+            val bottomSheet = OtpBottomSheetDialogFragment("+62${this.inputNumberPhone.text.toString()}")
+            bottomSheet.isCancelable = false
+            bottomSheet.show(this.supportFragmentManager, "ok")
+        }
     }
 }

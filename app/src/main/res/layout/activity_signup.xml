@@ -24,7 +24,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:paddingTop="8dp"
         android:id="@+id/linearFeature"
         android:layout_width="match_parent"
         android:layout_height="156dp"
@@ -35,7 +34,7 @@
         <ImageView
             android:id="@+id/image"
             android:layout_alignParentEnd="true"
-            android:layout_gravity="end"
+
             android:layout_width="128dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_hello"/>

@@ -53,4 +53,8 @@
     <string name="signin_with_google">Masuk Menggunakan Google</string>
     <string name="signin">Masuk</string>
     <string name="signup">Daftar</string>
+    <string name="otp_sended">Kode OTP Sedang Dikirimkan\nKe Nomor</string>
+    <string name="resend">Kirim Ulang</string>
+    <string name="ups">Ups...</string>
+    <string name="phone_number_empty">Kamu Belum Memasukkan Nomor HP Kamu :(</string>
 </resources>

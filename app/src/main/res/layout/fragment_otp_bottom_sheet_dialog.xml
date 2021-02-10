@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".bottomsheet.OtpBottomSheetDialogFragment">
+
+    <TextView
+        android:padding="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textTitle"
+        android:textColor="@color/material_black"
+        android:text="@string/otp_sended"/>
+
+    <com.poovam.pinedittextfield.SquarePinField
+        android:id="@+id/inputCode"
+        android:layout_marginHorizontal="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:inputType="number"
+        android:textSelectHandle="@drawable/text_handle"
+        android:textSize="16sp"
+        app:cornerRadius="8dp"
+        app:highlightColor="@color/yellow_800"
+        app:fieldColor="@color/yellow_800"
+        app:fillerColor="@color/yellow_800"
+        app:fillerRadius="2dp"
+        app:lineThickness="0.3dp"
+        app:noOfFields="6" />
+
+    <TextView
+        android:layout_marginHorizontal="16dp"
+        android:padding="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textResend"
+        android:text="@string/resend"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonSignin"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        app:backgroundTint="@color/yellow_600"
+        android:text="@string/signin"
+        android:textColor="@color/material_black"/>
+
+</LinearLayout>

@@ -63,7 +63,7 @@ class ErrorBottomSheetFragment() : BottomSheetDialogFragment(), View.OnClickList
         }
 
         if (!isUseSubtitle){
-            this.textTitle.visibility = View.GONE
+            this.textSubtitle.visibility = View.GONE
         }
 
         this.buttonOK = view.findViewById(R.id.buttonOk)

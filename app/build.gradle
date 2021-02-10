@@ -60,6 +60,8 @@ dependencies {
     implementation 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
     implementation "com.github.skydoves:balloon:1.2.3"
     implementation 'com.philliphsu:bottomsheetpickers:2.4.1'
+    implementation 'com.poovam:pin-edittext-field:1.2.3'
+    implementation 'com.google.firebase:firebase-auth:20.0.1'
 
     kapt 'com.jakewharton:butterknife-compiler:10.2.3'
 
