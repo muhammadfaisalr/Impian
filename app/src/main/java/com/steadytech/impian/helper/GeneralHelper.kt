@@ -1,8 +1,12 @@
 package com.steadytech.impian.helper
 
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import com.steadytech.impian.model.realm.Wishlist
 import io.realm.Realm
 import io.realm.kotlin.where
@@ -53,6 +57,19 @@ class GeneralHelper {
             val recommendationLong = wishlist.amount / daysLeft
             
             return currencyFormat(recommendationLong)
+        }
+
+
+        fun copy(text: String?, activity: Activity) {
+            val clipboardManager =
+                activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("Copy", text)
+            clipboardManager.setPrimaryClip(clip)
+            Toast.makeText(activity, "Copied To Clipboard!", Toast.LENGTH_SHORT).show()
+        }
+
+        fun dot(): String? {
+            return "\u2022 "
         }
     }
 }

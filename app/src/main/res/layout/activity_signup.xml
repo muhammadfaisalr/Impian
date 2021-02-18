@@ -33,38 +33,38 @@
 
         <ImageView
             android:id="@+id/image"
-            android:layout_alignParentEnd="true"
-
             android:layout_width="128dp"
+
             android:layout_height="match_parent"
-            android:src="@drawable/ic_hello"/>
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_hello" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerInParent="true"
             android:layout_alignParentStart="true"
-            android:layout_toStartOf="@id/image">
+            android:layout_centerInParent="true"
+            android:layout_toStartOf="@id/image"
+            android:orientation="vertical">
 
 
             <TextView
                 android:id="@+id/textTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mari Kita Mulai!"
-                android:textColor="@color/material_black"
-                android:textSize="24sp"
                 android:layout_gravity="top"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="16dp"
+                android:text="Mari Kita Mulai!"
+                android:textColor="@color/material_black"
+                android:textSize="24sp" />
 
             <TextView
+                android:id="@id/textSubtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@id/textSubtitle"
-                android:text="Perubahan Untuk #MulaiRaihImpian"
-                android:layout_marginHorizontal="16dp"/>
+                android:layout_marginHorizontal="16dp"
+                android:text="Perubahan Untuk #MulaiRaihImpian" />
         </LinearLayout>
 
     </RelativeLayout>
@@ -82,13 +82,15 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
-            android:hint="Nomor Telepon Kamu"
-            app:boxStrokeColor="@color/yellow_600"
-            app:hintTextColor="@color/yellow_800"
-            app:layout_constraintTop_toBottomOf="@id/linearFeature">
+            android:hint="@string/phone_number"
+            app:boxStrokeColor="@color/black"
+            app:hintTextColor="@color/black"
+            app:prefixText="+62"
+            app:prefixTextColor="@color/black"
+            app:startIconDrawable="@drawable/ic_phone">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputNumberPhone"
+                android:id="@+id/inputPhoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
@@ -103,9 +105,9 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
             android:hint="@string/input_your_name"
-            app:boxStrokeColor="@color/yellow_600"
-            app:hintTextColor="@color/yellow_800"
-            app:layout_constraintTop_toBottomOf="@id/linearFeature">
+            app:boxStrokeColor="@color/black"
+            app:hintTextColor="@color/black"
+            app:startIconDrawable="@drawable/ic_person">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputName"
@@ -117,7 +119,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonSignin"
+            android:id="@+id/buttonSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -131,10 +133,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_margin="16dp"
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -145,13 +147,13 @@
             android:text="Sudah Punya Akun?" />
 
         <TextView
-            android:foreground="?attr/selectableItemBackground"
-            android:textColor="@color/material_black"
-            android:layout_marginStart="8dp"
             android:id="@+id/textSignin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Masuk Disini" />
+            android:layout_marginStart="8dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="Masuk Disini"
+            android:textColor="@color/material_black" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

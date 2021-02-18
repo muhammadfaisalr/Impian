@@ -57,4 +57,15 @@
     <string name="resend">Kirim Ulang</string>
     <string name="ups">Ups...</string>
     <string name="phone_number_empty">Kamu Belum Memasukkan Nomor HP Kamu :(</string>
+    <string name="account_not_found">Akun Tidak Ditemukan</string>
+    <string name="account_not_fount_description">Sepertinya Kamu Belum Terdaftar Pada Aplikasi Impian, Apakah Kamu Ingin Mendaftar?</string>
+    <string name="yes_register">Ya, Daftar</string>
+    <string name="name_empty">Nama Kamu Masih Kosong</string>
+    <string name="phone_number">Nomor Telepon Kamu</string>
+    <string name="sign_in_anonymously">Lanjutkan Tanpa Login</string>
+    <string name="loading">Tunggu Sebentar Ya...</string>
+    <string name="motto_not_found">Tidak Ada Motto</string>
+    <string name="logout">Keluar</string>
+    <string name="subtitle_logout">Apakah Kamu Yakin Ingin Keluar?</string>
+    <string name="something_wrong">Ada Sesuatu Yang Salah, Hanya Itu Yang Kami Tau.</string>
 </resources>

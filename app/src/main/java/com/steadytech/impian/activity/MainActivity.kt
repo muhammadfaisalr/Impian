@@ -142,7 +142,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TabLayout.OnTabS
                 createGoalsBottomSheetFragment.show(this.supportFragmentManager, "MainActivity")
             }
             this.imagePortfolio -> {
-                startActivity(Intent(this, PortfolioActivity::class.java).putExtra("currentBalance", this.amount))
+                startActivity(Intent(this, ProfileActivity::class.java).putExtra("currentBalance", this.amount))
             }
             this.buttonAddGoals -> {
                 startActivity(Intent(this, CreateGoalsActivity::class.java))
