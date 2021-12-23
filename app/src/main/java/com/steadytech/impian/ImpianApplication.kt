@@ -1,12 +1,10 @@
 package com.steadytech.impian
 
 import android.app.Application
+import com.steadytech.impian.database.entity.EntityImpianCategory
 import com.steadytech.impian.helper.*
-import com.steadytech.impian.manager.MigrationManager
-import com.steadytech.impian.model.realm.Menu
 import io.realm.Realm
-import io.realm.RealmConfiguration
-import kotlin.random.Random
+import org.w3c.dom.Entity
 
 class ImpianApplication : Application() {
 
@@ -14,30 +12,26 @@ class ImpianApplication : Application() {
         super.onCreate()
         Realm.init(this)
 
-        val config = RealmConfiguration.Builder()
-                .name("impian_database.realm")
-                .schemaVersion(6)
-                .migration(MigrationManager())
-                .build()
-
-        Realm.setDefaultConfiguration(config)
-
-        AlarmHelper.setAlarm(this, 1)
-
-        this.setMenu()
+        this.setCategories()
     }
 
-    private fun setMenu() {
-        val realm = Realm.getDefaultInstance()
-        val menus = ArrayList<Menu>()
+    private fun setCategories() {
+        val db =  DatabaseHelper.localDb(this)
 
-        menus.add(Menu(1L,"Pengaturan", R.drawable.ic_settings, Constant.MODE.PROFILE))
-        menus.add(Menu(2L,"Edit Akun", R.drawable.ic_edit_24, Constant.MODE.PROFILE))
+        val categories = db.daoCategory().getAll() as ArrayList<EntityImpianCategory>
 
-        for (data in menus){
-            realm.executeTransaction{
-                val menu = Menu(data.id, data.name, data.icon, data.mode)
-                it.copyToRealmOrUpdate(menu)
+        if (categories.isEmpty()){
+            categories.add(EntityImpianCategory(null, this.getString(R.string.wedding), R.drawable.ic_round_favorite_24))
+            categories.add(EntityImpianCategory(null, this.getString(R.string.vacation), R.drawable.ic_baseline_airplane_ticket_24))
+            categories.add(EntityImpianCategory(null, this.getString(R.string.electronic), R.drawable.ic_round_headphones_24))
+            categories.add(EntityImpianCategory(null, this.getString(R.string.home), R.drawable.ic_round_maps_home_work_24))
+            categories.add(EntityImpianCategory(null, this.getString(R.string.vehicle), R.drawable.ic_round_directions_car_filled_24))
+            categories.add(EntityImpianCategory(null, this.getString(R.string.health), R.drawable.ic_round_local_hospital_24))
+            categories.add(EntityImpianCategory(null, this.getString(R.string.education), R.drawable.ic_round_school_24))
+            categories.add(EntityImpianCategory(null, this.getString(R.string.etc), R.drawable.ic_round_space_dashboard_24))
+
+            for (entity in categories){
+                db.daoCategory().insert(entity)
             }
         }
     }

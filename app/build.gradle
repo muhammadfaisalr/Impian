@@ -10,6 +10,12 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
+    buildFeatures{
+        viewBinding{
+            enabled true
+        }
+    }
+
     defaultConfig {
         applicationId "com.steadytech.impian"
         minSdkVersion 25
@@ -45,14 +51,17 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
-    //FIREBASE
+    //GOOGLE
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation "androidx.room:room-runtime:2.2.6"
+    kapt "androidx.room:room-compiler:2.2.6"
     implementation platform('com.google.firebase:firebase-bom:26.2.0')
     implementation 'com.google.firebase:firebase-database:19.2.1'
+    implementation 'com.google.firebase:firebase-auth:20.0.1'
 
     //OTHER
-    implementation 'com.jakewharton:butterknife:10.2.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "org.apache.commons:commons-lang3:3.0"
 
     //CUSTOM UI
     implementation 'com.daimajia.androidanimations:library:2.4@aar'
@@ -61,7 +70,9 @@ dependencies {
     implementation "com.github.skydoves:balloon:1.2.3"
     implementation 'com.philliphsu:bottomsheetpickers:2.4.1'
     implementation 'com.poovam:pin-edittext-field:1.2.3'
-    implementation 'com.google.firebase:firebase-auth:20.0.1'
+    implementation 'com.bignerdranch.android:simple-item-decoration:1.0.0'
+    implementation "com.github.skydoves:expandablelayout:1.0.6"
+    implementation "com.yuyakaido.android:card-stack-view:2.3.4"
 
     kapt 'com.jakewharton:butterknife-compiler:10.2.3'
 

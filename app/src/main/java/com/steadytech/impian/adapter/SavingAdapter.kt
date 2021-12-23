@@ -11,22 +11,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.steadytech.impian.R
 import com.steadytech.impian.activity.MainActivity
-import com.steadytech.impian.helper.BottomSheets
-import com.steadytech.impian.helper.Constant
-import com.steadytech.impian.helper.FontsHelper
-import com.steadytech.impian.helper.GeneralHelper
-import com.steadytech.impian.model.realm.Saving
-import com.steadytech.impian.model.realm.Wishlist
-import io.realm.Realm
-import io.realm.RealmResults
-import io.realm.kotlin.where
+import com.steadytech.impian.database.AppDatabase
+import com.steadytech.impian.database.entity.EntitySaving
+import com.steadytech.impian.helper.*
 import java.text.SimpleDateFormat
-import java.util.*
 
 class SavingAdapter(
-    private val datas: RealmResults<Saving>,
+    private val datas: List<EntitySaving>,
     private val activity: Activity,
-    private var realm: Realm = Realm.getDefaultInstance()
+    private val database : AppDatabase = DatabaseHelper.localDb(activity)
 ) : RecyclerView.Adapter<SavingAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -40,16 +33,15 @@ class SavingAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(datas[position], activity)
+        holder.bind(datas[position], activity, database)
 
 
 
         holder.itemView.setOnClickListener {
-            val wishlist =
-                this.realm.where<Wishlist>().equalTo("id", datas[position]!!.targetId).findFirst()
+            val wishlist = this.database.daoWishlist().get(datas[position].id!!)
             BottomSheets.information(
-                datas[position]!!,
-                wishlist!!.isCompleted,
+                datas[position],
+                wishlist.isCompleted!!,
                 activity as AppCompatActivity,
                 View.OnClickListener {
                     BottomSheets.confirmation(
@@ -59,10 +51,9 @@ class SavingAdapter(
                         Constant.TAG.DetailGoalsActivity,
                         activity,
                         View.OnClickListener {
-                            this.realm.executeTransaction{
-                                datas[position]!!.deleteFromRealm()
-                            }
-                            Toast.makeText(activity, "Berhasil Menghapus Data!", Toast.LENGTH_SHORT).show()
+
+                            Toast.makeText(activity, "Berhasil Menghapus Data!", Toast.LENGTH_SHORT)
+                                .show()
                             activity.startActivity(Intent(activity, MainActivity::class.java))
                             activity.finish()
                         }
@@ -75,21 +66,26 @@ class SavingAdapter(
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private lateinit var textAmount: TextView
+        private lateinit var textImpianName: TextView
         private lateinit var textDate: TextView
 
-        fun bind(saving: Saving?, activity: Activity) {
+        fun bind(saving: EntitySaving, activity: Activity, database: AppDatabase) {
             this.textAmount = this.itemView.findViewById(R.id.textAmount)
-            this.textAmount.typeface = FontsHelper.INTER.medium(activity)
-            this.textAmount.text = GeneralHelper.currencyFormat(saving!!.amount)
+            this.textImpianName = this.itemView.findViewById(R.id.textImpianName)
+
+            this.textImpianName.text = database.daoWishlist().getById(saving.wishlistID!!).name
+            this.textAmount.text = GeneralHelper.currencyFormat(saving.amount!!)
 
             var sdf = SimpleDateFormat("yyyymmdd")
-            val date = sdf.parse(saving!!.savingDate)
+            val date = sdf.parse(saving.savingDate)
 
             sdf = SimpleDateFormat("EEEE, dd/MM/yyyy")
 
             this.textDate = this.itemView.findViewById(R.id.textDate)
             this.textDate.typeface = FontsHelper.INTER.light(activity)
             this.textDate.text = sdf.format(date)
+
+            FontsHelper.INTER.medium(activity, this.textAmount, this.textImpianName)
         }
     }
 }

@@ -57,10 +57,8 @@ class CreateGoalsBottomSheetFragment : BottomSheetDialogFragment(), View.OnClick
     override fun onClick(v: View?) {
         if (v == this.layoutCreateGoals){
             startActivity(Intent(this.activity, CreateGoalsActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK))
-            activity!!.finish()
         }else{
             startActivity(Intent(this.activity, AddBalanceActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP))
-            activity!!.finish()
         }
     }
 }

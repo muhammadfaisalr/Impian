@@ -1,4 +1,4 @@
-package com.steadytech.impian.activity
+    package com.steadytech.impian.activity
 
 import android.content.Context
 import android.content.Intent
@@ -96,7 +96,7 @@ class SigninActivity : AppCompatActivity(), View.OnClickListener {
             .addOnCompleteListener {
                 loading.dismiss()
 
-                val preferences = this.getPreferences(Context.MODE_PRIVATE)
+                val preferences = this.getSharedPreferences(Constant.NAME.MODE_IS_ANONYMOUS, Context.MODE_PRIVATE)
                 with(preferences.edit()){
                     putBoolean(Constant.MODE.ANONYMOUS, true)
                     apply()
@@ -146,5 +146,34 @@ class SigninActivity : AppCompatActivity(), View.OnClickListener {
             bottomSheet.isCancelable = false
             bottomSheet.show(this.supportFragmentManager, SigninActivity::class.java.simpleName)
         }
+    }
+
+    fun createGoals(v : View){
+        BottomSheets.description(
+            R.drawable.ic_target,
+            this.getString(R.string.create_goals),
+            this.getString(R.string.description_create_goals),
+            this,
+            SigninActivity::class.java.simpleName
+        )
+    }
+    fun dailyReminder(v : View){
+        BottomSheets.description(
+            R.drawable.ic_notification,
+            this.getString(R.string.daily_reminder),
+            this.getString(R.string.description_daily_reminder),
+            this,
+            SigninActivity::class.java.simpleName
+        )
+    }
+
+    fun free(v : View){
+        BottomSheets.description(
+            R.drawable.ic_free,
+            this.getString(R.string.free),
+            this.getString(R.string.description_free),
+            this,
+            SigninActivity::class.java.simpleName   
+        )
     }
 }

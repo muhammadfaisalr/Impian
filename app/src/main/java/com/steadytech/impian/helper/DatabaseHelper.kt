@@ -5,7 +5,14 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.util.Base64
+import android.util.Log
 import android.widget.Toast
+import androidx.room.Database
+import androidx.room.Room
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.steadytech.impian.database.AppDatabase
 import java.security.InvalidAlgorithmParameterException
 import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException
@@ -22,6 +29,10 @@ class DatabaseHelper {
         private val MODE = "Blowfish/CBC/PKCS5Padding"
         private val IV = "abcdefgh"
         private val KEY = "Cards"
+
+        fun localDb(context: Context) : AppDatabase{
+            return Room.databaseBuilder(context, AppDatabase::class.java, Constant.NAME.LOCAL_DB).allowMainThreadQueries().build()
+        }
 
         fun encryptString(value: String?): String {
             if (value == null || value.isEmpty()) return ""
@@ -95,6 +106,18 @@ class DatabaseHelper {
                 e.printStackTrace()
             }
             return ""
+        }
+    }
+    class FIREBASE {
+        companion object{
+            fun getImpianPath(context: Context) : DatabaseReference{
+                val auth = FirebaseAuth.getInstance().currentUser
+                val database = FirebaseDatabase.getInstance().getReference(Constant.PATH.IMPIAN)
+
+                Log.d(DatabaseHelper::class.java.simpleName, "Start get Impian Path with Current User ${auth!!.uid}")
+
+                return database.child(auth.uid)
+            }
         }
     }
 }

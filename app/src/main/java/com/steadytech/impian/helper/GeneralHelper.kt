@@ -1,15 +1,19 @@
 package com.steadytech.impian.helper
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.view.View
-import android.view.inputmethod.InputMethodManager
+import android.view.Window
+import android.view.WindowManager
+import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
-import com.steadytech.impian.model.realm.Wishlist
-import io.realm.Realm
-import io.realm.kotlin.where
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
+import com.steadytech.impian.R
+import com.steadytech.impian.database.dao.DaoWishlist
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,21 +22,32 @@ import kotlin.math.roundToInt
 
 class GeneralHelper {
     companion object {
+
+        fun changeStatusBarColor(activity: Activity, color: Int) {
+            val window: Window = activity.window
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor = ContextCompat.getColor(activity, color)
+        }
+
+
         fun currencyFormat(amount: Long): String {
             return NumberFormat.getCurrencyInstance(Locale("id", "id")).format(amount)
                 .replace(",00", "")
         }
 
-        fun hideKeyboard(activity: Activity) {
-            val imm: InputMethodManager =
-                activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-            //Find the currently focused view, so we can grab the correct window token from it.
-            var view: View? = activity.currentFocus
-            //If no view currently has focus, create a new one, just so we can grab a window token from it
-            if (view == null) {
-                view = View(activity)
+
+        fun textAvatar(text: String) : String{
+            val datas = text.split(" ")
+            val result = StringBuilder()
+
+            for (data in datas){
+                if (result.length < 3){
+                    result.append(data[0])
+                }
             }
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
+
+            return result.toString()
         }
 
         fun countDaysBetweenTwoCalendar(calendarStart: Calendar, calendarEnd: Calendar) : Int{
@@ -40,21 +55,21 @@ class GeneralHelper {
             return (millionSeconds / (1000.0 * 60 * 60 * 24)).roundToInt()
         }
 
-        fun calculateRecommendationSaving(goalsName : String, realm : Realm): String {
-            val wishlist = realm.where<Wishlist>().equalTo("name", goalsName).findFirst()
+        fun calculateRecommendationSaving(goalsName: String, daoWishlist: DaoWishlist): String {
+            val wishlist = daoWishlist.getByName(goalsName)
 
             val start = Calendar.getInstance()
             val end = Calendar.getInstance()
 
-            val sdf = SimpleDateFormat("yyyymmdd", Locale.ENGLISH)
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
             start.time = sdf.parse(wishlist!!.startDate)
 
-            val sdfEnd = SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH)
+            val sdfEnd = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
             end.time = sdfEnd.parse(wishlist!!.endDate)
 
             val daysLeft = this.countDaysBetweenTwoCalendar(start, end)
 
-            val recommendationLong = wishlist.amount / daysLeft
+            val recommendationLong = wishlist.amount!! / daysLeft
             
             return currencyFormat(recommendationLong)
         }
@@ -70,6 +85,62 @@ class GeneralHelper {
 
         fun dot(): String? {
             return "\u2022 "
+        }
+
+        @SuppressLint("UseCompatLoadingForDrawables")
+        fun setImageImpianCategory(context: Context, category: String, imageView: ImageView) {
+            when (category) {
+                context.getString(R.string.wedding) -> {
+                    imageView.setImageDrawable(context.getDrawable(R.drawable.ic_round_favorite_24))
+                }
+                context.getString(R.string.vacation) -> {
+                    imageView.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_airplane_ticket_24))
+                }
+                context.getString(R.string.electronic) -> {
+                    imageView.setImageDrawable(context.getDrawable(R.drawable.ic_round_headphones_24))
+                }
+                context.getString(R.string.home) -> {
+                    imageView.setImageDrawable(context.getDrawable(R.drawable.ic_round_maps_home_work_24))
+                }
+                context.getString(R.string.health) -> {
+                    imageView.setImageDrawable(context.getDrawable(R.drawable.ic_round_local_hospital_24))
+                }
+                context.getString(R.string.education) -> {
+                    imageView.setImageDrawable(context.getDrawable(R.drawable.ic_round_school_24))
+                }
+                else -> {
+                    imageView.setImageDrawable(context.getDrawable(R.drawable.ic_round_space_dashboard_24))
+                }
+            }
+        }
+
+        fun verticalDivider(context: Context) : DividerItemDecoration{
+            val itemDecorator = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+            itemDecorator.setDrawable(ContextCompat.getDrawable(context, R.drawable.item_divider)!!)
+
+            return itemDecorator
+        }
+        fun horizontalDivider(context: Context) : DividerItemDecoration{
+            val itemDecorator = DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL)
+            itemDecorator.setDrawable(ContextCompat.getDrawable(context, R.drawable.item_divider)!!)
+
+            return itemDecorator
+        }
+
+        fun validateInputNotEmpty(vararg editText: EditText) : Boolean {
+            var isPassed = true
+
+            for (input in editText){
+                if (input.text.isEmpty()){
+                    isPassed = false
+                }
+
+                if (input.text.toString() == ""){
+                    isPassed = false
+                }
+            }
+
+            return isPassed
         }
     }
 }

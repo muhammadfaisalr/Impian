@@ -9,12 +9,13 @@ import android.widget.EditText
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.steadytech.impian.R
+import com.steadytech.impian.database.entity.EntitySaving
 import com.steadytech.impian.helper.FontsHelper
 import com.steadytech.impian.model.realm.Saving
 import com.steadytech.impian.model.realm.Wishlist
 import java.text.SimpleDateFormat
 
-class InfoBottomSheetFragment(private val saving: Saving, private val listener : View.OnClickListener, private val isCompleted : Boolean) : BottomSheetDialogFragment() {
+class InfoBottomSheetFragment(private val saving: EntitySaving, private val listener : View.OnClickListener, private val isCompleted : Boolean) : BottomSheetDialogFragment() {
 
     private lateinit var inputAmount : EditText
     private lateinit var inputDescription : EditText

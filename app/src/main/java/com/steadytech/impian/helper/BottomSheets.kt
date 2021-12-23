@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.steadytech.impian.bottomsheet.ConfirmationBottomSheetFragment
+import com.steadytech.impian.bottomsheet.DescriptionBottomSheetFragment
 import com.steadytech.impian.bottomsheet.ErrorBottomSheetFragment
 import com.steadytech.impian.bottomsheet.InfoBottomSheetFragment
+import com.steadytech.impian.database.entity.EntitySaving
 import com.steadytech.impian.model.realm.Saving
 
 class BottomSheets {
@@ -54,13 +56,24 @@ class BottomSheets {
         }
 
         fun information(
-            saving : Saving,
+            saving : EntitySaving,
             isCompleted : Boolean,
             activity : AppCompatActivity,
             listener : View.OnClickListener
         ){
             val infoBottomSheetFragment = InfoBottomSheetFragment(saving, listener, isCompleted)
             infoBottomSheetFragment.show(activity.supportFragmentManager, Constant.TAG.DetailGoalsActivity)
+        }
+
+        fun description(
+            image : Int,
+            title : String,
+            description : String,
+            activity: AppCompatActivity,
+            tag : String
+        ){
+            val descriptionBottomSheet = DescriptionBottomSheetFragment(image, title, description)
+            descriptionBottomSheet.show(activity.supportFragmentManager, tag)
         }
     }
 }

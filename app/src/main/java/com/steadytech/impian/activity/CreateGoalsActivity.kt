@@ -1,351 +1,194 @@
 package com.steadytech.impian.activity
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.text.method.DigitsKeyListener
-import android.text.method.TextKeyListener
+import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.CalendarView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.daimajia.androidanimations.library.Techniques
-import com.daimajia.androidanimations.library.YoYo
-import com.google.android.material.button.MaterialButton
-import com.philliphsu.bottomsheetpickers.date.DatePickerDialog
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.textfield.TextInputEditText
 import com.steadytech.impian.R
-import com.steadytech.impian.bottomsheet.ConfirmationBottomSheetFragment
-import com.steadytech.impian.helper.Constant
-import com.steadytech.impian.helper.FontsHelper
-import com.steadytech.impian.model.realm.Wishlist
-import io.realm.Realm
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import com.steadytech.impian.bottomsheet.CategoriesBottomSheetDialogFragment
+import com.steadytech.impian.custom.Loading
+import com.steadytech.impian.custom.RupiahEditText
+import com.steadytech.impian.database.entity.EntityWishlist
+import com.steadytech.impian.databinding.ActivityCreateGoalsBinding
+import com.steadytech.impian.helper.*
+import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.random.Random
 
 
-class CreateGoalsActivity : AppCompatActivity(), View.OnClickListener,
-    DatePickerDialog.OnDateSetListener {
-    private lateinit var textTitle: TextView
-    private lateinit var textStep1: TextView
-    private lateinit var textStep2: TextView
-    private lateinit var textStep3: TextView
-    private lateinit var textDate: TextView
+class  CreateGoalsActivity : AppCompatActivity(), View.OnClickListener,
+    CalendarView.OnDateChangeListener {
 
-    private lateinit var inputAnswer: EditText
-    private lateinit var inputAmount: EditText
+    private lateinit var textBack: TextView
+    private lateinit var textTitleCalendar: TextView
 
-    private lateinit var layoutStep: LinearLayout
-    private lateinit var layoutAmount: LinearLayout
+    private lateinit var calendar: CalendarView
 
-    private lateinit var buttonNext: MaterialButton
-    private lateinit var buttonPrevious: MaterialButton
+    private lateinit var inputCategory: TextInputEditText
+    private lateinit var inputName: TextInputEditText
+    private lateinit var inputDescription: TextInputEditText
+    private lateinit var inputBudget: RupiahEditText
 
-    private lateinit var progressBar: ProgressBar
+    private lateinit var exfabSave: ExtendedFloatingActionButton
 
-    private var handler: Handler = Handler()
-    private var step: Int = 1
+    private lateinit var binding: ActivityCreateGoalsBinding
 
-    private lateinit var realm : Realm
-
-
-    private var name: String = ""
-    private var amount: String = ""
-    private var date: String = ""
-
+    private lateinit var targetDate: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        super.setContentView(R.layout.activity_create_goals)
-
+        this.binding = ActivityCreateGoalsBinding.inflate(this.layoutInflater)
+        super.setContentView(this.binding.root)
         this.supportActionBar!!.hide()
 
         this.init()
-
-        this.validate()
-
-        this.buttonNext.setOnClickListener(this)
-        this.buttonPrevious.setOnClickListener(this)
-        this.textDate.setOnClickListener(this)
     }
-
-    private fun validate() {
-
-        if (step != 1) {
-            this.layoutStep.visibility = View.GONE
-        }
-
-        when (step) {
-            1 -> {
-                this.handler.postDelayed({
-                    this.step1()
-                }, 500)
-            }
-            2 -> {
-                this.handler.postDelayed({
-                    this.step2()
-                }, 500)
-            }
-            else -> {
-                this.handler.postDelayed({
-                    this.step3()
-                }, 500)
-            }
-        }
-    }
-
 
     private fun init() {
-        this.realm = Realm.getDefaultInstance()
+        this.textBack = this.binding.textBack
+        this.textTitleCalendar = this.binding.textHintCalendar
+        this.inputCategory = this.binding.inputCategory
+        this.inputDescription = this.binding.inputDescription
+        this.inputName = this.binding.inputGoalsName
+        this.inputBudget = this.binding.inputBudget
+        this.calendar = this.binding.calendar
+        this.exfabSave = this.binding.exfabSave
 
-        this.progressBar = findViewById(R.id.progressBar)
+        FontsHelper.INTER.medium(this, this.textBack, this.textTitleCalendar)
+        FontsHelper.INTER.regular(this, this.inputName, this.inputCategory, this.inputBudget)
 
-        this.layoutAmount = findViewById(R.id.layoutAmount)
+        this.settingCalendar()
 
-        this.textStep1 = findViewById(R.id.textStep1)
-        this.textStep1.typeface = FontsHelper.INTER.light(this)
+        this.textBack.setOnClickListener(this)
+        this.inputCategory.setOnClickListener(this)
+        this.exfabSave.setOnClickListener(this)
+        this.calendar.setOnDateChangeListener(this)
+    }
 
-        this.textStep2 = findViewById(R.id.textStep2)
-        this.textStep2.typeface = FontsHelper.INTER.light(this)
-
-        this.textStep3 = findViewById(R.id.textStep3)
-        this.textStep3.typeface = FontsHelper.INTER.light(this)
-
-        this.textTitle = findViewById(R.id.textTitle)
-        this.textTitle.typeface = FontsHelper.INTER.medium(this)
-
-        this.textDate = findViewById(R.id.textDate)
-        this.textDate.typeface = FontsHelper.INTER.regular(this)
-
-        this.inputAnswer = findViewById(R.id.inputAnswer)
-        this.inputAnswer.typeface = FontsHelper.INTER.regular(this)
-
-        this.inputAmount = findViewById(R.id.inputAmount)
-        this.inputAmount.typeface = FontsHelper.INTER.regular(this)
-
-        this.buttonNext = findViewById(R.id.buttonNext)
-        this.buttonNext.typeface = FontsHelper.INTER.regular(this)
-
-        this.buttonPrevious = findViewById(R.id.buttonPrevious)
-        this.buttonPrevious.typeface = FontsHelper.INTER.regular(this)
-
-        this.layoutStep = findViewById(R.id.layoutStep1)
+    private fun settingCalendar() {
+        this.calendar.minDate = Date().time
     }
 
     override fun onClick(v: View?) {
-        if (v == this.buttonNext) {
-            this.next()
-        } else if (v == this.buttonPrevious) {
-            this.previous()
-        } else if (v == this.textDate) {
-            if (this.step == 3) {
-               this.showDatePicker()
-            }
+        if (v == this.textBack) {
+            this.back()
+        } else if (v == this.inputCategory) {
+            this.category()
+        } else if (v == this.exfabSave) {
+            this.save()
         }
     }
 
-    private fun showDatePicker() {
-        val calendar = Calendar.getInstance()
+    @SuppressLint("SimpleDateFormat")
+    private fun save() {
+        val isPassed = GeneralHelper.validateInputNotEmpty(
+            this.inputBudget,
+            this.inputCategory,
+            this.inputName
+        )
 
-        calendar.timeInMillis = System.currentTimeMillis() + 24 * 60 * 60 * 1000
+        if (isPassed) {
+            val loading = Loading(this)
+            loading.setCancelable(false)
+            loading.show()
 
-        val dialog = DatePickerDialog.Builder(
-            this,
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        ).setMinDate(calendar).build()
+            val isFreeMode = SharedPreferenceHelper.isFreeMode(this)
 
-        dialog.show(this.supportFragmentManager, Constant.TAG.CreateGoalsActivity)
-    }
+            val name = this.inputName.text.toString()
+            val budget = this.inputBudget.text.toString().replace(".", "")
+            val description = this.inputDescription.text.toString()
+            val category = this.inputCategory.text.toString()
 
+            val sdf = SimpleDateFormat("dd/MM/yyyy")
+            val currentDate = sdf.format(Date())
 
-    private fun next() {
-        when (this.step) {
-            1 -> {
-                if (this.inputAnswer.text.isNotEmpty()){
-                    this.processStep()
-                }else{
-                    Toast.makeText(this, "Kamu Belum Masukkan Jawaban!", Toast.LENGTH_SHORT).show()
-                }
-            }
-            2 -> {
-                if (this.inputAmount.text.isNotEmpty()){
-                    this.processStep()
-                }else{
-                    Toast.makeText(this, "Kamu Belum Masukkan Jawaban!", Toast.LENGTH_SHORT).show()
-                }
-            }
-            else -> {
-                if (this.textDate.text.toString() == "Masukkan Jawaban Disini"){
-                    Toast.makeText(this, "Kamu Belum Masukkan Jawaban!", Toast.LENGTH_SHORT).show()
-                }else{
-                    this.finishStep()
-                }
-            }
-        }
-    }
+            val db = DatabaseHelper.localDb(this)
+            val entityWishlist = EntityWishlist(
+                id = null,
+                name = name,
+                amount = budget.toLong(),
+                description = description,
+                startDate = currentDate,
+                endDate = this.targetDate,
+                reminderInterval = Constant.REMINDER_INTERVAL.DAY,
+                isCompleted = false,
+                category = category,
+                isSynchronized = Conditions.NO
+            )
 
-    private fun finishStep() {
-        this.date = this.textDate.text.toString()
+            db.daoWishlist().insert(entityWishlist)
 
-        val bundle = Bundle()
-        bundle.putString("name", this.name)
-        bundle.putString("amount", this.amount)
-        bundle.putString("date", this.date)
+            AlarmHelper.setAlarm(this, 20, 10, 20   , 0)
 
-        val confirmationBottomSheetFragment = ConfirmationBottomSheetFragment(
-            View.OnClickListener {
-                this.realm.executeTransaction {
-
-                    val wishlist = it.createObject(Wishlist::class.java, Random.nextInt().toLong())
-                    wishlist.startDate = LocalDateTime.now().format(DateTimeFormatter.BASIC_ISO_DATE)
-                    wishlist.endDate = this.date.format(DateTimeFormatter.BASIC_ISO_DATE)
-                    wishlist.name = this.name
-                    wishlist.amount = this.amount.replace(".", "").toLong()
-                    wishlist.reminderInterval = Constant.REMINDER_INTERVAL.DAY
-                    wishlist.description = "Tidak Ada Deskripsi"
-
-                    it.copyToRealmOrUpdate(wishlist)
-
-                }
-                startActivity(Intent(this, SuccessActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK))
+            if (isFreeMode or UserHelper.isAnonymous(this)){
+                //Jika menggunakan mode gratis atau Tanpa Login
+                loading.dismiss()
+                startActivity(Intent(this, SuccessActivity::class.java))
                 finish()
-            })
-        confirmationBottomSheetFragment.arguments = bundle
-        confirmationBottomSheetFragment.show(this.supportFragmentManager, Constant.TAG.CreateGoalsActivity)
-    }
-
-
-
-    private fun processStep() {
-        this.step++
-        YoYo.with(Techniques.FadeOut).playOn(this.layoutStep)
-        this.handler.postDelayed({
-            this.validate()
-        }, 500)
-    }
-
-    private fun step3() {
-        if (step == 3) {
-
-            this.inputAmount.visibility = View.GONE
-            this.inputAnswer.visibility = View.GONE
-            this.textDate.visibility = View.VISIBLE
-            this.layoutAmount.visibility = View.GONE
-
-            this.amount = this.inputAmount.text.toString()
-
-            this.textStep1.setTextColor(this.resources.getColor(R.color.text_primary))
-            this.textStep2.setTextColor(this.resources.getColor(R.color.text_primary))
-            this.textStep3.setTextColor(this.resources.getColor(R.color.black))
-            this.textStep3.typeface = FontsHelper.INTER.medium(this)
-            this.textStep2.typeface = FontsHelper.INTER.light(this)
-            this.textStep1.typeface = FontsHelper.INTER.light(this)
-
-            this.progressBar.setProgress(100, true)
-            this.amount = this.inputAmount.text.toString()
-
-            this.layoutStep.visibility = View.VISIBLE
-            this.buttonPrevious.visibility = View.VISIBLE
-            YoYo.with(Techniques.FadeIn).playOn(this.layoutStep)
-            this.textTitle.text = "Kapan Kamu Ingin " + this.name + " Tercapai?"
-            val view = this.currentFocus
-            if (view != null) {
-                val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(view.windowToken, 0)
+                return
             }
 
-            this.buttonNext.text = "Selesai"
+            //Jika tidak menggunakan mode gratis dan Login Menggunakan Akun
+            DatabaseHelper.FIREBASE.getImpianPath(this).child(entityWishlist.id.toString()).setValue(entityWishlist).addOnSuccessListener {
+                Log.d(CreateGoalsActivity::class.java.simpleName, "Success set value to Firebase")
+
+                entityWishlist.isSynchronized = Conditions.YES
+                DatabaseHelper.localDb(this).daoWishlist().update(entityWishlist)
+                loading.dismiss()
+
+                startActivity(Intent(this, SuccessActivity::class.java))
+                finish()
+            }.addOnFailureListener{
+                Log.d(CreateGoalsActivity::class.java.simpleName, "Fail to set value in Firebase!\nError Message : ${it.message}")
+                it.printStackTrace()
+                BottomSheets.error(
+                        title = this.getString(R.string.fail_to_save_data),
+                        subtitle = it.message!!,
+                        useTitle = true,
+                        useSubTitle =  true,
+                        buttonMessage = this. getString(R.string.ok),
+                        TAG = CreateGoalsActivity::class.java.simpleName,
+                        activity =  this
+                )
+            }
+
+        } else {
+            BottomSheets.error(
+                title = this.getString(R.string.can_t_create_goals),
+                subtitle = this.getString(R.string.subtitle_data_is_not_filled),
+                useTitle = true,
+                useSubTitle = true,
+                buttonMessage = this.getString(R.string.ok),
+                TAG = CreateGoalsActivity::class.java.simpleName,
+                activity = this
+            )
         }
     }
 
-    private fun step2() {
-        if (step == 2) {
-            this.inputAmount.visibility = View.VISIBLE
-            this.layoutAmount.visibility = View.VISIBLE
-            this.inputAnswer.visibility = View.GONE
-            this.textDate.visibility = View.GONE
-            this.name = this.inputAnswer.text.toString()
-
-            this.textStep1.setTextColor(this.resources.getColor(R.color.text_primary))
-            this.textStep2.setTextColor(this.resources.getColor(R.color.black))
-            this.textStep3.setTextColor(this.resources.getColor(R.color.text_primary))
-
-            this.textStep3.typeface = FontsHelper.INTER.light(this)
-            this.textStep2.typeface = FontsHelper.INTER.medium(this)
-            this.textStep1.typeface = FontsHelper.INTER.light(this)
-
-            this.progressBar.setProgress(50, true)
-
-            this.layoutStep.visibility = View.VISIBLE
-            this.buttonPrevious.visibility = View.VISIBLE
-            YoYo.with(Techniques.FadeIn).playOn(this.layoutStep)
-            this.textTitle.text = "Berapa Biaya Yang Kamu Butuhkan\nUntuk " + this.name + " ?"
-
-            this.inputAmount.setText(this.amount)
-
-            this.inputAmount.keyListener = DigitsKeyListener.getInstance("0123456789")
+    private fun category() {
+        val category = CategoriesBottomSheetDialogFragment { entityImpianCategory, i ->
+            this.inputCategory.setText(entityImpianCategory.name)
+            this.inputCategory.setCompoundDrawablesWithIntrinsicBounds(
+                this.resources.getDrawable(
+                    entityImpianCategory.image!!
+                ), null, null, null
+            )
         }
+        category.show(this.supportFragmentManager, CreateGoalsActivity::class.java.simpleName)
     }
 
-    private fun step1() {
-        if (step == 1) {
-
-            this.inputAmount.visibility = View.GONE
-            this.inputAnswer.visibility = View.VISIBLE
-            this.textDate.visibility = View.GONE
-            this.layoutAmount.visibility = View.GONE
-
-            this.progressBar.setProgress(0, true)
-
-            this.textStep3.typeface = FontsHelper.INTER.light(this)
-            this.textStep2.typeface = FontsHelper.INTER.light(this)
-            this.textStep1.typeface = FontsHelper.INTER.medium(this)
-
-            this.textStep1.setTextColor(this.resources.getColor(R.color.black))
-            this.textStep2.setTextColor(this.resources.getColor(R.color.text_primary))
-            this.textStep3.setTextColor(this.resources.getColor(R.color.text_primary))
-
-            this.buttonPrevious.visibility = View.GONE
-
-            this.layoutStep.visibility = View.VISIBLE
-            YoYo.with(Techniques.FadeIn).playOn(this.layoutStep)
-
-
-            this.textTitle.text = "Apa Yang Kamu Impikan?"
-
-            this.inputAnswer.setText(this.name)
-
-            this.inputAnswer.isClickable = false
-            this.inputAnswer.keyListener = TextKeyListener(TextKeyListener.Capitalize.WORDS, false)
-        }
+    private fun back() {
+        finish()
     }
 
 
-    private fun previous() {
-        this.step--
-        this.validate()
-        YoYo.with(Techniques.FadeOut).playOn(this.layoutStep)
-    }
-
-    override fun onDateSet(
-        dialog: DatePickerDialog?,
-        year: Int,
-        monthOfYear: Int,
-        dayOfMonth: Int
-    ) {
-        val month = monthOfYear + 1
-        this.textDate.text = "$dayOfMonth/$month/$year"
-    }
-
-    override fun onBackPressed() {
-        if (this.step != 1){
-            this.previous()
-        }else{
-            super.onBackPressed()
-        }
+    override fun onSelectedDayChange(view: CalendarView, year: Int, month: Int, dayOfMonth: Int) {
+        val currentMonth = month + 1
+        this.targetDate = "$dayOfMonth/$currentMonth/$year"
     }
 }

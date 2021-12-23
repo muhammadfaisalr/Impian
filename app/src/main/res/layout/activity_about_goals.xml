@@ -54,7 +54,7 @@
                 android:id="@+id/textSubtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/describe_about_your_goals"
+                android:text="@string/everything_start_with_dream"
                 android:textSize="14sp" />
 
 

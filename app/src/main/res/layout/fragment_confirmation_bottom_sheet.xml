@@ -45,7 +45,7 @@
             android:layout_gravity="end"
             android:foreground="?attr/selectableItemBackground"
             android:background="@android:color/transparent"
-            android:text="@string/cancel"
+            android:text="@string/no_cancel"
             android:layout_margin="16dp"
             android:textColor="@color/black"
             app:rippleColor="@color/yellow_800"/>
@@ -57,7 +57,7 @@
             android:layout_weight="1"
             android:layout_gravity="end"
             app:backgroundTint="@color/yellow_600"
-            android:text="@string/save"
+            android:text="@string/yes_save"
             android:layout_margin="16dp"
             android:textColor="@color/black"
             app:rippleColor="@color/yellow_400"/>

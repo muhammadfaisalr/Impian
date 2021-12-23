@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.get
 import androidx.recyclerview.widget.RecyclerView
 import com.steadytech.impian.R
 import com.steadytech.impian.model.realm.Menu
@@ -18,7 +17,7 @@ class MenuAdapter(private val menus : RealmResults<Menu>, val activity : Activit
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         lateinit var textView : TextView
-        lateinit var imageView : ImageView
+        lateinit var imageView : ImageView  
 
         @SuppressLint("UseCompatLoadingForDrawables")
         fun bind(data : Menu, activity : Activity) {
@@ -31,7 +30,7 @@ class MenuAdapter(private val menus : RealmResults<Menu>, val activity : Activit
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuAdapter.ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_menu, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_category, parent, false))
     }
 
     override fun getItemCount(): Int {

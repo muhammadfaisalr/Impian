@@ -5,46 +5,149 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_primary"
-    tools:context=".activity.MainActivity">
+    tools:context=".activity.MainActivity"> 
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="180dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textTitleCurrentSavingAmount"
-            android:layout_width="wrap_content"
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/textCurrentAmount"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="8dp"
-            android:text="Kamu Telah Menabung Sebanyak" />
+            android:layout_alignParentTop="true"
+            android:layout_margin="16dp"
+            app:cardBackgroundColor="@color/yellow_600"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="8dp">
 
-        <TextView
-            android:id="@+id/textCurrentAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerInParent="true"
-            android:layout_marginHorizontal="16dp"
-            android:text="Rp720.000"
-            android:textColor="@color/material_black"
-            android:textSize="24sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-        <ImageView
-            android:foreground="?attr/selectableItemBackground"
-            android:id="@+id/imagePortfolio"
-            android:layout_centerInParent="true"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/ic_chart"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="32dp"
-            app:tint="@color/material_black" />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="2"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:id="@+id/cardAmount"
+                    app:cardCornerRadius="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="@string/saving"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/textAmount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="8dp"
+                            android:text="Rp120.000"
+                            android:textColor="@color/material_black"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/textClickHere"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="Klik Untuk Detail"
+                            android:textColor="@color/yellow_800"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:foreground="?attr/selectableItemBackground"
+                    android:id="@+id/linearAccount"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_person"
+                        app:tint="@color/material_black" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Akun"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_notification"
+                        app:tint="@color/material_black" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Notifikasi"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:foreground="?attr/selectableItemBackground"
+                    android:id="@+id/linearSettings"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="TODO"
+                        android:src="@drawable/ic_settings"
+                        app:tint="@color/material_black" />
+
+                    <TextView
+                        android:id="@+id/textSettings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pengaturan"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/textYourGoals"
@@ -63,15 +166,15 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
+            android:layout_marginHorizontal="16dp"
             android:background="@android:color/transparent"
             app:tabGravity="center"
-            app:tabMode="fixed"
-            app:tabRippleColor="@color/yellow_800"
-            app:tabIndicatorHeight="2dp"
-            android:layout_marginHorizontal="16dp"
-            app:tabMinWidth="64dp"
             app:tabIndicatorColor="@color/yellow_600"
             app:tabIndicatorFullWidth="true"
+            app:tabIndicatorHeight="2dp"
+            app:tabMinWidth="64dp"
+            app:tabMode="fixed"
+            app:tabRippleColor="@color/yellow_800"
             app:tabSelectedTextColor="@color/material_black"
             app:tabTextAppearance="@style/CustomTabStyle">
 
@@ -93,33 +196,33 @@
         android:id="@+id/linearNotHaveGoals"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
         android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" >
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
 
         <ImageView
             android:layout_width="256dp"
             android:layout_height="256dp"
-            android:src="@drawable/ic_lets_add_goals"/>
+            android:src="@drawable/ic_lets_add_goals" />
 
         <TextView
             android:id="@+id/textNotHaveGoals"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/goals_not_found"
             android:layout_margin="16dp"
-            android:textSize="16sp"/>
+            android:text="@string/goals_not_found"
+            android:textSize="16sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonAddGoals"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:backgroundTint="@color/yellow_600"
+            android:text="@string/add_goals"
             android:textColor="@color/black"
-            android:text="@string/add_goals"/>
+            app:backgroundTint="@color/yellow_600" />
 
     </LinearLayout>
 
@@ -127,18 +230,18 @@
         android:id="@+id/recyclerTodo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:visibility="gone"
         android:id="@+id/fabAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add_24"
+        android:visibility="gone"
         app:backgroundTint="@color/yellow_600"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

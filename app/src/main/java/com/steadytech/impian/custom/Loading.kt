@@ -17,10 +17,9 @@ import com.steadytech.impian.helper.FontsHelper
 @SuppressLint("InflateParams", "UseCompatLoadingForDrawables")
 class Loading(context: Context) : AlertDialog(context) {
 
-    lateinit var textLoading : TextView
+    var textLoading : TextView
 
     init {
-//        super.getWindow()!!.setBackgroundDrawable(context.getDrawable(R.drawable.all_radius))
         super.getWindow()!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val view = LayoutInflater.from(context).inflate(R.layout.loading, null)
         this.textLoading = view.findViewById(R.id.textLoading)
@@ -32,21 +31,5 @@ class Loading(context: Context) : AlertDialog(context) {
     override fun show() {
         super.show()
         super.setContentView(R.layout.loading)
-    }
-
-    override fun cancel() {
-        super.cancel()
-    }
-
-    override fun setCancelable(flag: Boolean) {
-        super.setCancelable(flag)
-    }
-
-    override fun dismiss() {
-        super.dismiss()
-    }
-
-    override fun setOnDismissListener(listener: DialogInterface.OnDismissListener?) {
-        super.setOnDismissListener(listener)
     }
 }

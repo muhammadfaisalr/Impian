@@ -1,5 +1,6 @@
 package com.steadytech.impian.bottomsheet
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.fonts.Font
 import android.os.Bundle
@@ -190,11 +191,17 @@ class OtpBottomSheetDialogFragment(private val phoneNumber : String, private val
                                         )
 
                                         loading.dismiss()
+                                        val preferences = this@OtpBottomSheetDialogFragment.activity!!.getSharedPreferences(Constant.NAME.MODE_IS_ANONYMOUS, Context.MODE_PRIVATE)
+                                        with(preferences.edit()){
+                                            putBoolean(com.steadytech.impian.helper.Constant.MODE.ANONYMOUS, false)
+                                            apply()
+                                        }
                                         startActivity(
                                             Intent(
                                                 this@OtpBottomSheetDialogFragment.activityCompat,
                                                 MainActivity::class.java
                                             )
+
                                         )
                                         this@OtpBottomSheetDialogFragment.activityCompat.finish()
                                     }

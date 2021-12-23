@@ -8,8 +8,12 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.steadytech.impian.R
+import com.steadytech.impian.database.AppDatabase
+import com.steadytech.impian.database.dao.DaoWishlist
+import com.steadytech.impian.database.entity.EntityWishlist
 import com.steadytech.impian.helper.BottomSheets
 import com.steadytech.impian.helper.Constant
+import com.steadytech.impian.helper.DatabaseHelper
 import com.steadytech.impian.helper.FontsHelper
 import com.steadytech.impian.model.realm.Saving
 import com.steadytech.impian.model.realm.Wishlist
@@ -18,23 +22,24 @@ import io.realm.kotlin.where
 
 class AboutGoalsActivity : AppCompatActivity(), View.OnClickListener {
 
-    private lateinit var fabEdit : FloatingActionButton
-    private lateinit var fabCancel : FloatingActionButton
-    private lateinit var fabSave : FloatingActionButton
-    private lateinit var fabDelete : FloatingActionButton
+    private lateinit var fabEdit: FloatingActionButton
+    private lateinit var fabCancel: FloatingActionButton
+    private lateinit var fabSave: FloatingActionButton
+    private lateinit var fabDelete: FloatingActionButton
 
-    private lateinit var imageBack : ImageView
+    private lateinit var imageBack: ImageView
 
-    private lateinit var inputGoals : EditText
-    private lateinit var inputAmount : EditText
-    private lateinit var inputDescribe : EditText
+    private lateinit var inputGoals: EditText
+    private lateinit var inputAmount: EditText
+    private lateinit var inputDescribe: EditText
 
-    private lateinit var realm : Realm
+    private lateinit var database: AppDatabase
+    private lateinit var daoWishlist: DaoWishlist
 
-    private lateinit var wishList : Wishlist
+    private lateinit var wishList: EntityWishlist
 
-    private var id : Long = 0L
-    private var mode : String = Constant.MODE.VIEW
+    private var id: Long = 0L
+    private var mode: String = Constant.MODE.VIEW
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,9 +74,9 @@ class AboutGoalsActivity : AppCompatActivity(), View.OnClickListener {
 
 
     private fun init() {
-        this.realm = Realm.getDefaultInstance()
-
-        this.wishList = this.realm.where<Wishlist>().equalTo("id", this.id).findFirst()!!
+        this.database = DatabaseHelper.localDb(this)
+        this.daoWishlist = this.database.daoWishlist()
+        this.wishList = this.daoWishlist.get(this.id)
 
         this.fabEdit = findViewById(R.id.fabEdit)
         this.fabSave = findViewById(R.id.fabSave)
@@ -79,20 +84,17 @@ class AboutGoalsActivity : AppCompatActivity(), View.OnClickListener {
         this.fabDelete = findViewById(R.id.fabDelete)
 
         this.inputGoals = findViewById(R.id.inputGoals)
-        this.inputGoals.typeface = FontsHelper.INTER.regular(this)
-
         this.inputAmount = findViewById(R.id.inputAmount)
-        this.inputAmount.typeface = FontsHelper.INTER.regular(this)
-
         this.inputDescribe = findViewById(R.id.inputDescribe)
-        this.inputDescribe.typeface = FontsHelper.INTER.regular(this)
+
+        FontsHelper.INTER.regular(this, this.inputDescribe, this.inputAmount, this.inputGoals)
 
         this.imageBack = findViewById(R.id.imageBack)
     }
 
     private fun validate() {
-        if (!wishList.isCompleted){
-            if (this.mode == Constant.MODE.VIEW){
+        if (wishList.isCompleted == true) {
+            if (this.mode == Constant.MODE.VIEW) {
                 this.fabSave.visibility = View.GONE
                 this.fabEdit.visibility = View.VISIBLE
                 this.fabCancel.visibility = View.GONE
@@ -101,7 +103,7 @@ class AboutGoalsActivity : AppCompatActivity(), View.OnClickListener {
                 this.inputGoals.isEnabled = false
                 this.inputAmount.isEnabled = false
                 this.inputDescribe.isEnabled = false
-            }else{
+            } else {
                 this.fabSave.visibility = View.VISIBLE
                 this.fabCancel.visibility = View.VISIBLE
                 this.fabEdit.visibility = View.GONE
@@ -111,7 +113,7 @@ class AboutGoalsActivity : AppCompatActivity(), View.OnClickListener {
                 this.inputAmount.isEnabled = true
                 this.inputDescribe.isEnabled = true
             }
-        }else{
+        } else {
             this.fabSave.visibility = View.GONE
             this.fabEdit.visibility = View.GONE
             this.fabCancel.visibility = View.GONE
@@ -145,22 +147,16 @@ class AboutGoalsActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun delete() {
         BottomSheets.confirmation(
-            this.getString(R.string.delete_your_goals),
-            this.getString(R.string.subtitle_delete_your_goals),
-            this.getString(R.string.yes_continue),
-            Constant.TAG.DetailGoalsActivity,
-            this,
-            View.OnClickListener {
-                this.realm.executeTransaction{
-                    it.where<Saving>().equalTo("targetId", wishList.id).findFirst()?.deleteFromRealm()
-                    this.wishList.deleteFromRealm()
-                    startActivity(
-                        Intent(
-                            this,
-                            MainActivity::class.java
-                        ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                this.getString(R.string.delete_your_goals),
+                this.getString(R.string.subtitle_delete_your_goals),
+                this.getString(R.string.yes_continue),
+                Constant.TAG.DetailGoalsActivity,
+                this,
+                View.OnClickListener {
+                    this.daoWishlist.delete(this.wishList)
+                    startActivity(Intent(this@AboutGoalsActivity, MainActivity::class.java))
+                    finish()
                 }
-            }
         )
     }
 
@@ -177,36 +173,34 @@ class AboutGoalsActivity : AppCompatActivity(), View.OnClickListener {
 
 
     private fun save() {
-        if (this.inputGoals.text.isNotEmpty() && this.inputAmount.text.isNotEmpty() && this.inputAmount.text.toString().replace(".", "") != "0"){
-           BottomSheets.confirmation(
-               this.getString(R.string.update_your_goals),
-               this.getString(R.string.subtile_update_your_goals),
-               this.getString(R.string.yes_continue),
-               Constant.TAG.AboutGoalsActivity,
-               this,
-               View.OnClickListener {
-                   this.mode = Constant.MODE.VIEW
+        if (this.inputGoals.text.isNotEmpty() && this.inputAmount.text.isNotEmpty() && this.inputAmount.text.toString().replace(".", "") != "0") {
+            BottomSheets.confirmation(
+                    this.getString(R.string.update_your_goals),
+                    this.getString(R.string.subtile_update_your_goals),
+                    this.getString(R.string.yes_continue),
+                    Constant.TAG.AboutGoalsActivity,
+                    this,
+                    View.OnClickListener {
+                        this.mode = Constant.MODE.VIEW
 
-                   this.realm.executeTransaction{
-                       this.wishList.name = this.inputGoals.text.toString()
-                       this.wishList.amount = this.inputAmount.text.toString().replace(".", "").toLong()
-                       this.wishList.description = this.inputDescribe.text.toString()
+                        this.wishList.name = this.inputGoals.text.toString()
+                        this.wishList.amount = this.inputAmount.text.toString().replace(".", "").toLong()
+                        this.wishList.description = this.inputDescribe.text.toString()
 
-                       it.copyToRealmOrUpdate(this.wishList)
-                   }
-                   startActivity(Intent(this, DetailGoalsActivity::class.java).putExtra("id", this.id))
-                   finish()
-               }
-           )
-        }else{
+                        this.daoWishlist.update(this.wishList)
+                        startActivity(Intent(this, DetailGoalsActivity::class.java).putExtra("id", this.id))
+                        finish()
+                    }
+            )
+        } else {
             BottomSheets.error(
-                this.getString(R.string.please_fill_data),
-                this.getString(R.string.description_please_fill_data),
-                useTitle = true,
-                useSubTitle = true,
-                buttonMessage = this.getString(R.string.ok),
-                TAG = Constant.TAG.AboutGoalsActivity,
-                activity = this
+                    this.getString(R.string.please_fill_data),
+                    this.getString(R.string.description_please_fill_data),
+                    useTitle = true,
+                    useSubTitle = true,
+                    buttonMessage = this.getString(R.string.ok),
+                    TAG = Constant.TAG.AboutGoalsActivity,
+                    activity = this
             )
         }
     }

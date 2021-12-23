@@ -45,10 +45,11 @@
                     app:cardElevation="8dp">
 
                     <ImageView
+                        android:id="@+id/imageThumbnail"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="8dp"
-                        android:src="@drawable/ic_computer_24"
+                        android:src="@drawable/ic_rocket_24"
                         app:tint="@color/yellow_800" />
 
                 </androidx.cardview.widget.CardView>

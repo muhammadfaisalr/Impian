@@ -4,10 +4,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationManagerCompat
+import com.steadytech.impian.helper.DatabaseHelper
 import com.steadytech.impian.helper.NotificationHelper
-import com.steadytech.impian.model.realm.Wishlist
-import io.realm.Realm
-import io.realm.kotlin.where
 
 
 /**
@@ -17,13 +15,18 @@ import io.realm.kotlin.where
 class ReminderReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        NotificationHelper.createChannelNotification(20, context!!)
-        val builder = NotificationHelper.showNotification(20, context)
 
-        with(NotificationManagerCompat.from(context)) {
-            notify(20, builder.build())
+        val db = DatabaseHelper.localDb(context!!)
+        val impianLists = db.daoCategory().getAll()
+
+        for (impian in impianLists){
+            NotificationHelper.createChannelNotification(20, context)
+            val builder = NotificationHelper.showNotification(20, context)
+
+            with(NotificationManagerCompat.from(context)) {
+                notify(impian.id!!.toInt(), builder.build())
+            }
         }
 
     }
-
 }
