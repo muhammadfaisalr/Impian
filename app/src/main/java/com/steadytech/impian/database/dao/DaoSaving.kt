@@ -16,7 +16,7 @@ import com.steadytech.impian.database.entity.EntitySaving
      fun get(id : Long) : EntitySaving
 
      @Query("SELECT * FROM saving WHERE wishlist_id = :wishlistID")
-     fun getByWishlistID(wishlistID : Long) : EntitySaving
+     fun getByWishlistID(wishlistID : Long) : EntitySaving?
 
      @Insert
      fun insert(saving: EntitySaving)

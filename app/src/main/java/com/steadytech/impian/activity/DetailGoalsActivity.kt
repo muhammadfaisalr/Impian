@@ -3,6 +3,7 @@ package com.steadytech.impian.activity
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -17,16 +18,17 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.steadytech.impian.R
 import com.steadytech.impian.adapter.SavingAdapter
-import com.steadytech.impian.bottomsheet.MenuBottomSheetDialogFragment
 import com.steadytech.impian.database.AppDatabase
 import com.steadytech.impian.database.dao.DaoSaving
 import com.steadytech.impian.database.dao.DaoWishlist
 import com.steadytech.impian.database.entity.EntitySaving
 import com.steadytech.impian.database.entity.EntityWishlist
+import com.steadytech.impian.databinding.ActivityDetailGoalsBinding
 import com.steadytech.impian.helper.*
 import org.ocpsoft.prettytime.PrettyTime
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class DetailGoalsActivity : AppCompatActivity(), View.OnClickListener {
@@ -73,12 +75,15 @@ class DetailGoalsActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var daoWishlist: DaoWishlist
     private lateinit var daoSaving: DaoSaving
 
+    private lateinit var binding: ActivityDetailGoalsBinding
+
     private var id: Long = 0L
     private var amount: Long = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        super.setContentView(R.layout.activity_detail_goals)
+        this.binding = ActivityDetailGoalsBinding.inflate(this.layoutInflater)
+        super.setContentView(this.binding.root)
 
         this.supportActionBar!!.hide()
 
@@ -107,13 +112,35 @@ class DetailGoalsActivity : AppCompatActivity(), View.OnClickListener {
         this.daoSaving = this.database.daoSaving()
         this.daoWishlist = this.database.daoWishlist()
 
-        this.behavior = findViewById(R.id.behavior)
-        this.imageDivider = findViewById(R.id.imageDivider)
+        this.binding.apply {
+            this@DetailGoalsActivity.behavior = this.behavior.behavior
+            this@DetailGoalsActivity.imageDivider = this.imageDivider
+            this@DetailGoalsActivity.textMenu = this.textMenu
+            this@DetailGoalsActivity.textTitle = this.textTitle
 
-        this.textMenu = findViewById(R.id.textMenu)
+            this@DetailGoalsActivity.textDownload = this.textInfo
+            this@DetailGoalsActivity.textAddSaving = this.textAchieved
+            this@DetailGoalsActivity.textEmptyBalance = this.behavior.textBalanceEmpty
+            this@DetailGoalsActivity.textTips = this.behavior.textTips
+            this@DetailGoalsActivity.textTitleCurrentBalance = this.behavior.textTitleCurrentBalance
+            this@DetailGoalsActivity.textTitleTarget = this.behavior.textTitleTarget
+            this@DetailGoalsActivity.fabAddBalance = this.behavior.fabAddBalance
+            this@DetailGoalsActivity.buttonBack = this.buttonBack
+            this@DetailGoalsActivity.buttonAddBalance = this.behavior.buttonAddBalance
+
+            this@DetailGoalsActivity.linearEmptyBalance = this.behavior.linearBalanceEmpty
+            this@DetailGoalsActivity.linearMarkAsAchieved = this.linearAchieved
+            this@DetailGoalsActivity.linearAboutGoals = this.linearAboutGoals
+            this@DetailGoalsActivity.progressBar = this.behavior.progressBar
+            this@DetailGoalsActivity.recyclerSaving = this.behavior.recyclerSaving
+            this@DetailGoalsActivity.imageDove = this.imageDove
+
+
+        }
+        this.recyclerSaving.addItemDecoration(DividerItemDecoration(this, RecyclerView.VERTICAL))
+
         this.textMenu.typeface = FontsHelper.INTER.medium(this)
 
-        this.textTitle = findViewById(R.id.textTitle)
         this.textTitle.typeface = FontsHelper.INTER.medium(this)
 
         this.textTimeLeft = findViewById(R.id.textTimeLeft)
@@ -133,22 +160,6 @@ class DetailGoalsActivity : AppCompatActivity(), View.OnClickListener {
 
         this.relativeParent = findViewById(R.id.relativeParent)
 
-        this.textDownload = findViewById(R.id.textInfo)
-        this.textAddSaving = findViewById(R.id.textAchieved)
-        this.textEmptyBalance = findViewById(R.id.textBalanceEmpty)
-        this.textTips = findViewById(R.id.textTips)
-        this.textTitleCurrentBalance = findViewById(R.id.textTitleCurrentBalance)
-        this.textTitleTarget = findViewById(R.id.textTitleTarget)
-        this.fabAddBalance = findViewById(R.id.fabAddBalance)
-        this.buttonBack = findViewById(R.id.buttonBack)
-        this.buttonAddBalance = findViewById(R.id.buttonAddBalance)
-
-        this.linearEmptyBalance = findViewById(R.id.linearBalanceEmpty)
-        this.linearMarkAsAchieved = findViewById(R.id.linearAchieved)
-        this.linearAboutGoals = findViewById(R.id.linearAboutGoals)
-        this.progressBar = findViewById(R.id.progressBar)
-        this.recyclerSaving = findViewById(R.id.recyclerSaving)
-        this.imageDove = findViewById(R.id.imageDove)
 
         FontsHelper.INTER.regular(
                 this,
@@ -194,6 +205,7 @@ class DetailGoalsActivity : AppCompatActivity(), View.OnClickListener {
 
         if (this.wishlist.category == this.getString(R.string.wedding)) {
             this.relativeParent.setBackgroundResource(R.color.pink_wedding)
+            this.buttonAddBalance.setBackgroundColor(this.getColor(R.color.pink_wedding))
             this.imageDove.visibility = View.VISIBLE
             this.fabAddBalance.setBackgroundColor(this.resources.getColor(R.color.pink_wedding))
 
@@ -252,13 +264,21 @@ class DetailGoalsActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d(DetailGoalsActivity::class.java.simpleName, "On Resume();")
+
+        this.amount = 0L
+        this.data()
+    }
+
     private fun showMenu() {
         val bundle = Bundle()
         bundle.putLong(Constant.KEY.ID_WISHLIST, this.wishlist.id!!)
-
+/*
         val bottomSheet = MenuBottomSheetDialogFragment()
         bottomSheet.arguments = bundle
-        bottomSheet.show(this.supportFragmentManager, DetailGoalsActivity::class.java.simpleName)
+        bottomSheet.show(this.supportFragmentManager, DetailGoalsActivity::class.java.simpleName)*/
     }
 
     private fun addBalance() {

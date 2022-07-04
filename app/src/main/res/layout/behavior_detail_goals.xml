@@ -229,16 +229,17 @@
 
         </LinearLayout>
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/fabAddBalance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="16dp"
-            android:text="@string/add_saving"
-            app:backgroundTint="@color/yellow_600"
-            app:icon="@drawable/ic_add_24" />
-
     </LinearLayout>
+
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fabAddBalance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:text="@string/add_saving"
+        app:backgroundTint="@color/yellow_600"
+        app:icon="@drawable/ic_add_24" />
 
 </LinearLayout>

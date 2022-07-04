@@ -91,14 +91,16 @@
                         app:tint="@color/material_black" />
 
                     <TextView
+                        android:id="@+id/textAccount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Akun"
+                        android:text="@string/account"
                         android:textSize="12sp" />
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -112,9 +114,10 @@
                         app:tint="@color/material_black" />
 
                     <TextView
+                        android:id="@+id/textNotification"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Notifikasi"
+                        android:text="@string/notification"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -140,7 +143,7 @@
                         android:id="@+id/textSettings"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pengaturan"
+                        android:text="@string/setting"
                         android:textSize="12sp" />
 
                 </LinearLayout>

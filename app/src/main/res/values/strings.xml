@@ -25,7 +25,7 @@
     <string name="description_ask_mark_as_achieved">Kamu Tetap Bisa Melihat Impian Kamu Di Tab \'Tercapai\' Tetapi Kamu Tidak Dapat Menambahkan Tabungan Lagi. Lanjutkan?</string>
     <string name="description_add_balance">Kejar Impian Mu Dengan Menabung</string>
     <string name="ask_add_balance">Kamu Mau Nabung Berapa?*</string>
-    <string name="need_amount">Biaya Yang Dibutuhkan</string>
+    <string name="need_amount">Target Kamu</string>
     <string name="describe_your_goals">Deksripsikan Impian Kamu</string>
     <string name="about_your_goals">Tentang Impian Kamu</string>
     <string name="everything_start_with_dream">Semuanya Berawal Dari Mimpi :D !</string>
@@ -110,4 +110,8 @@
     <string name="backup_data">Cadangkan Data</string>
     <string name="onload_data">Sedang Memuat Data...</string>
     <string name="sync">Sinkronisasikan</string>
+    <string name="account">Akun</string>
+    <string name="notification">Notifikasi</string>
+    <string name="setting">Pengaturan</string>
+    <string name="saving_calculator">Kalkulator Menabung</string>
 </resources>

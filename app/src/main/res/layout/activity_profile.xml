@@ -104,6 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:background="@color/white"
+                    android:foreground="?attr/selectableItemBackground"
                     android:gravity="center|start"
                     android:orientation="horizontal"
                     android:padding="16dp">
@@ -146,6 +147,32 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="@string/backup_data"
+                        android:textColor="@color/material_black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearCalculator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:background="@color/white"
+                    android:gravity="center|start"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_round_calculate_24"
+                        app:tint="@color/material_black" />
+
+                    <TextView
+                        android:id="@+id/textCalculator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="@string/saving_calculator"
                         android:textColor="@color/material_black" />
 
                 </LinearLayout>

@@ -12,6 +12,7 @@ class ImpianApplication : Application() {
         super.onCreate()
         Realm.init(this)
 
+        AlarmHelper.setAlarm(this, 10044, 19, 0, 0)
         this.setCategories()
     }
 

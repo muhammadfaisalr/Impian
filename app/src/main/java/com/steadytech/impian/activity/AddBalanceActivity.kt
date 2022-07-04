@@ -114,7 +114,7 @@ class AddBalanceActivity : AppCompatActivity(), View.OnClickListener {
                     this.inputAmount.text.toString().replace(".", "").toLong(),
                     this.inputDescription.text.toString(),
                     LocalDateTime.now().format(DateTimeFormatter.BASIC_ISO_DATE),
-                    Conditions.NO
+                    Constant.NO
                 )
             )
         }
@@ -145,6 +145,7 @@ class AddBalanceActivity : AppCompatActivity(), View.OnClickListener {
             this.strings.add(wishlist.name!!)
             this.ids.add(wishlist.id.toString())
         }
+
         val adapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, this.strings)
 
         AlertDialog.Builder(this)

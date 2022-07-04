@@ -1,6 +1,11 @@
 package com.steadytech.impian.helper
 
 class Constant  {
+    companion object {
+        const val NO = "N"
+        const val YES = "Y"
+    }
+
     class NAME {
         companion object{
             const val MODE_IS_ANONYMOUS = "MODE_IS_ANONYMOUS"

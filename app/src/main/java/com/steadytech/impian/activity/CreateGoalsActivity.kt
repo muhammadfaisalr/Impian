@@ -38,7 +38,7 @@ class  CreateGoalsActivity : AppCompatActivity(), View.OnClickListener,
 
     private lateinit var binding: ActivityCreateGoalsBinding
 
-    private lateinit var targetDate: String
+    private var targetDate: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,11 +86,19 @@ class  CreateGoalsActivity : AppCompatActivity(), View.OnClickListener,
 
     @SuppressLint("SimpleDateFormat")
     private fun save() {
-        val isPassed = GeneralHelper.validateInputNotEmpty(
+        var isPassed = GeneralHelper.validateInputNotEmpty(
             this.inputBudget,
             this.inputCategory,
-            this.inputName
+            this.inputName,
         )
+
+        if (isPassed) {
+            isPassed = this.targetDate.isNotEmpty()
+        }
+
+        if (isPassed) {
+            isPassed = this.inputBudget.text.toString() != "0"
+        }
 
         if (isPassed) {
             val loading = Loading(this)
@@ -118,12 +126,12 @@ class  CreateGoalsActivity : AppCompatActivity(), View.OnClickListener,
                 reminderInterval = Constant.REMINDER_INTERVAL.DAY,
                 isCompleted = false,
                 category = category,
-                isSynchronized = Conditions.NO
+                isSynchronized = Constant.NO
             )
 
             db.daoWishlist().insert(entityWishlist)
 
-            AlarmHelper.setAlarm(this, 20, 10, 20   , 0)
+//            AlarmHelper.setAlarm(this, 44, 13, 49   , 0)
 
             if (isFreeMode or UserHelper.isAnonymous(this)){
                 //Jika menggunakan mode gratis atau Tanpa Login
@@ -137,7 +145,7 @@ class  CreateGoalsActivity : AppCompatActivity(), View.OnClickListener,
             DatabaseHelper.FIREBASE.getImpianPath(this).child(entityWishlist.id.toString()).setValue(entityWishlist).addOnSuccessListener {
                 Log.d(CreateGoalsActivity::class.java.simpleName, "Success set value to Firebase")
 
-                entityWishlist.isSynchronized = Conditions.YES
+                entityWishlist.isSynchronized = Constant.YES
                 DatabaseHelper.localDb(this).daoWishlist().update(entityWishlist)
                 loading.dismiss()
 
@@ -175,7 +183,7 @@ class  CreateGoalsActivity : AppCompatActivity(), View.OnClickListener,
             this.inputCategory.setText(entityImpianCategory.name)
             this.inputCategory.setCompoundDrawablesWithIntrinsicBounds(
                 this.resources.getDrawable(
-                    entityImpianCategory.image!!
+                    entityImpianCategory.image!!, null
                 ), null, null, null
             )
         }

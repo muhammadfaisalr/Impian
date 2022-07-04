@@ -16,12 +16,6 @@ class AlarmHelper {
             calendar.set(Calendar.SECOND, second)
             calendar.set(Calendar.MILLISECOND, 0)
 
-            val current = Calendar.getInstance()
-
-            if (current.after(calendar)){
-                calendar.add(Calendar.DATE, 1)
-            }
-
             val intent = Intent(context, ReminderReceiver::class.java)
             val pendingIntent = PendingIntent.getBroadcast(context, alarmID, intent, PendingIntent.FLAG_UPDATE_CURRENT)
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager

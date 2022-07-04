@@ -45,6 +45,22 @@ class FontsHelper {
                 }
             }
 
+            fun bold(activity: Activity, vararg views: Any?){
+                for (view in views){
+                    when (view) {
+                        is TextView -> {
+                            view.typeface = Typeface.createFromAsset(activity.assets, "font/inter_bold.ttf")
+                        }
+                        is TextInputEditText -> {
+                            view.typeface = Typeface.createFromAsset(activity.assets, "font/inter_bold.ttf")
+                        }
+                        is MaterialButton -> {
+                            view.typeface = Typeface.createFromAsset(activity.assets, "font/inter_bold.ttf")
+                        }
+                    }
+                }
+            }
+
             fun light(activity: Activity, vararg views: Any?){
                 for (view in views){
                     when (view) {

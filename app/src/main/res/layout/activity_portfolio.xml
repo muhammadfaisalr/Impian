@@ -10,7 +10,7 @@
     <LinearLayout
         android:foreground="?attr/selectableItemBackground"
         android:id="@+id/linearBack"
-        android:layout_margin="16dp"
+        android:padding="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="start|center"
@@ -28,26 +28,32 @@
             android:layout_height="wrap_content"
             android:text="@string/back"
             android:textColor="@color/material_black"
-            android:letterSpacing="0.2"/>
+            android:letterSpacing="0.1"/>
 
     </LinearLayout>
 
     <TextView
-        android:layout_above="@id/cardBackground"
-        android:layout_margin="16dp"
+        android:id="@+id/textDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textDescription"
+        android:layout_above="@id/cardBackground"
+        android:layout_below="@id/linearBack"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/dont_forget_to_share"
-        android:textSize="24sp"
         android:textColor="@color/material_black"
-        android:layout_below="@id/linearBack"/>
+        android:textSize="24sp" />
 
     <androidx.cardview.widget.CardView
+        android:elevation="0dp"
+        app:cardElevation="0dp"
         android:id="@+id/cardBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        app:cardMaxElevation="0dp">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -143,31 +149,33 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:id="@+id/textStory"
-                        android:visibility="gone"/>
+                        android:layout_width="match_parent"
+                        android:layout_height="128dp"
+                        android:visibility="gone" />
 
                     <EditText
                         android:id="@+id/inputDescription"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="128dp"
                         android:background="@android:color/transparent"
                         android:gravity="start"
                         android:hint="Ceritakan Pengalaman-mu Disini"
-                        android:lines="5" />
+                        android:lines="5"
+                        android:maxLines="5"
+                        android:minLines="5" />
 
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginVertical="16dp"
-                        android:background="@color/material_black" />
+                        android:background="#D8D8D8" />
 
                     <TextView
                         android:id="@+id/textHashtag"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_gravity="start"
                         android:text="#MulaiRaihImpian"
                         android:textColor="@color/yellow_800" />
 
@@ -181,12 +189,15 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabShare"
-        android:layout_centerInParent="true"
-        android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:src="@drawable/ic_share"
         app:backgroundTint="@color/material_black"
         app:fabSize="normal"

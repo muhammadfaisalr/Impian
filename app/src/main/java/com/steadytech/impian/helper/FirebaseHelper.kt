@@ -11,7 +11,6 @@ class FirebaseHelper {
         }
 
         fun storeWishlist(entityWishlist: EntityWishlist): Wishlist {
-
             return Wishlist(
                 id = DatabaseHelper.encryptString(entityWishlist.id.toString()),
                 amount = DatabaseHelper.encryptString(entityWishlist.amount.toString()),

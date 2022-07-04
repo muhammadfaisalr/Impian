@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.EditText
@@ -30,12 +31,12 @@ class GeneralHelper {
             window.statusBarColor = ContextCompat.getColor(activity, color)
         }
 
-
         fun currencyFormat(amount: Long): String {
-            return NumberFormat.getCurrencyInstance(Locale("id", "id")).format(amount)
+            return NumberFormat
+                .getCurrencyInstance(Locale("id", "id"))
+                .format(amount)
                 .replace(",00", "")
         }
-
 
         fun textAvatar(text: String) : String{
             val datas = text.split(" ")
@@ -48,6 +49,12 @@ class GeneralHelper {
             }
 
             return result.toString()
+        }
+
+        fun makeClickable(listener: View.OnClickListener, vararg views: View) {
+            for (i in views) {
+                i.setOnClickListener(listener)
+            }
         }
 
         fun countDaysBetweenTwoCalendar(calendarStart: Calendar, calendarEnd: Calendar) : Int{
@@ -67,8 +74,12 @@ class GeneralHelper {
             val sdfEnd = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
             end.time = sdfEnd.parse(wishlist!!.endDate)
 
-            val daysLeft = this.countDaysBetweenTwoCalendar(start, end)
+            var daysLeft = this.countDaysBetweenTwoCalendar(start, end)
 
+            if (daysLeft == 0) {
+                // Handle if the target is targeted in sameday
+                daysLeft = 1
+            }
             val recommendationLong = wishlist.amount!! / daysLeft
             
             return currencyFormat(recommendationLong)

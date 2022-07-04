@@ -34,19 +34,19 @@
             app:tint="@color/material_black" />
 
         <TextView
-            android:foreground="?attr/selectableItemBackground"
             android:id="@+id/textMenu"
-            android:letterSpacing="0.2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/menu"
-            android:textSize="16sp"
             android:layout_alignParentEnd="true"
-            android:layout_margin="16dp"
+            android:padding="16dp"
+            android:drawablePadding="8dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:letterSpacing="0.2"
+            android:text="@string/menu"
             android:textAllCaps="true"
             android:textColor="@color/material_black"
-            android:drawablePadding="8dp"
-            android:gravity="center"
+            android:textSize="16sp"
             app:drawableEndCompat="@drawable/ic_round_menu_24"
             app:drawableTint="@color/material_black" />
 

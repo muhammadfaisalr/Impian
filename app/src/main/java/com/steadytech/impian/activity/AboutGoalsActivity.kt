@@ -9,16 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.steadytech.impian.R
 import com.steadytech.impian.database.AppDatabase
+import com.steadytech.impian.database.dao.DaoSaving
 import com.steadytech.impian.database.dao.DaoWishlist
 import com.steadytech.impian.database.entity.EntityWishlist
 import com.steadytech.impian.helper.BottomSheets
 import com.steadytech.impian.helper.Constant
 import com.steadytech.impian.helper.DatabaseHelper
 import com.steadytech.impian.helper.FontsHelper
-import com.steadytech.impian.model.realm.Saving
-import com.steadytech.impian.model.realm.Wishlist
-import io.realm.Realm
-import io.realm.kotlin.where
 
 class AboutGoalsActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -35,6 +32,7 @@ class AboutGoalsActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var database: AppDatabase
     private lateinit var daoWishlist: DaoWishlist
+    private lateinit var daoSaving: DaoSaving
 
     private lateinit var wishList: EntityWishlist
 
@@ -76,6 +74,7 @@ class AboutGoalsActivity : AppCompatActivity(), View.OnClickListener {
     private fun init() {
         this.database = DatabaseHelper.localDb(this)
         this.daoWishlist = this.database.daoWishlist()
+        this.daoSaving = this.database.daoSaving()
         this.wishList = this.daoWishlist.get(this.id)
 
         this.fabEdit = findViewById(R.id.fabEdit)
@@ -93,7 +92,7 @@ class AboutGoalsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun validate() {
-        if (wishList.isCompleted == true) {
+        if (wishList.isCompleted != true) {
             if (this.mode == Constant.MODE.VIEW) {
                 this.fabSave.visibility = View.GONE
                 this.fabEdit.visibility = View.VISIBLE
@@ -115,9 +114,9 @@ class AboutGoalsActivity : AppCompatActivity(), View.OnClickListener {
             }
         } else {
             this.fabSave.visibility = View.GONE
-            this.fabEdit.visibility = View.GONE
             this.fabCancel.visibility = View.GONE
             this.fabDelete.visibility = View.VISIBLE
+            this.fabEdit.visibility = View.GONE
 
             this.inputGoals.isEnabled = false
             this.inputAmount.isEnabled = false
@@ -153,6 +152,12 @@ class AboutGoalsActivity : AppCompatActivity(), View.OnClickListener {
                 Constant.TAG.DetailGoalsActivity,
                 this,
                 View.OnClickListener {
+                    val saving = this.daoSaving.getByWishlistID(this.wishList.id!!)
+
+                    if (saving != null) {
+                        this.daoSaving.delete(saving)
+                    }
+
                     this.daoWishlist.delete(this.wishList)
                     startActivity(Intent(this@AboutGoalsActivity, MainActivity::class.java))
                     finish()
@@ -188,7 +193,6 @@ class AboutGoalsActivity : AppCompatActivity(), View.OnClickListener {
                         this.wishList.description = this.inputDescribe.text.toString()
 
                         this.daoWishlist.update(this.wishList)
-                        startActivity(Intent(this, DetailGoalsActivity::class.java).putExtra("id", this.id))
                         finish()
                     }
             )

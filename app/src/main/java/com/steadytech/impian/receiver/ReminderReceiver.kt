@@ -19,13 +19,11 @@ class ReminderReceiver : BroadcastReceiver() {
         val db = DatabaseHelper.localDb(context!!)
         val impianLists = db.daoCategory().getAll()
 
-        for (impian in impianLists){
-            NotificationHelper.createChannelNotification(20, context)
-            val builder = NotificationHelper.showNotification(20, context)
+        NotificationHelper.createChannelNotification(10044, context)
+        val builder = NotificationHelper.showNotification(10044, context)
 
-            with(NotificationManagerCompat.from(context)) {
-                notify(impian.id!!.toInt(), builder.build())
-            }
+        with(NotificationManagerCompat.from(context)) {
+            notify(10044, builder.build())
         }
 
     }

@@ -120,7 +120,6 @@ class SigninActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun signup() {
         startActivity(Intent(this, SignupActivity::class.java))
-        finish()
     }
 
     private fun signin() {

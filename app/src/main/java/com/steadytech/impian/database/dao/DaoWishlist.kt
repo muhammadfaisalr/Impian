@@ -17,7 +17,7 @@ interface   DaoWishlist {
     fun getUnComplete(complete : Boolean = false) : List<EntityWishlist>
 
     @Query("SELECT * FROM wishlist WHERE complete = :complete  ")
-    fun getComplete(complete : Boolean = true) : List<EntityWishlist>
+    fun getByStatus(complete : Boolean = true) : List<EntityWishlist>
 
     @Query("SELECT * FROM wishlist WHERE  name = :name")
     fun getUnCompleteByName(name : String) : List<EntityWishlist>

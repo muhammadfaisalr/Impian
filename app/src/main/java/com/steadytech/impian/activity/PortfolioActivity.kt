@@ -21,12 +21,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.steadytech.impian.R
+import com.steadytech.impian.helper.DatabaseHelper
 import com.steadytech.impian.helper.FontsHelper
 import com.steadytech.impian.helper.GeneralHelper
-import com.steadytech.impian.model.realm.Wishlist
-import io.realm.Realm
-import io.realm.RealmResults
-import io.realm.kotlin.where
 import java.io.*
 import java.lang.Exception
 import java.util.*
@@ -49,9 +46,6 @@ class PortfolioActivity : AppCompatActivity(), View.OnClickListener, TextWatcher
     private lateinit var fabShare: FloatingActionButton
 
     private lateinit var linearBack: LinearLayout
-
-    private lateinit var wishlist: RealmResults<Wishlist>
-    private lateinit var realm: Realm
 
     private var currentBalance: Long = 0L
 
@@ -76,8 +70,9 @@ class PortfolioActivity : AppCompatActivity(), View.OnClickListener, TextWatcher
     }
 
     private fun init() {
-        this.realm = Realm.getDefaultInstance()
-        this.wishlist = this.realm.where<Wishlist>().equalTo("isCompleted", true).findAll()
+        val db = DatabaseHelper.localDb(this)
+        val wishlist =  db.daoWishlist()
+        val result = wishlist.getByStatus(true)
 
         this.textTitleBalance = findViewById(R.id.textTitleBalance)
         this.textTitleBalance.typeface = FontsHelper.INTER.regular(this)
@@ -103,7 +98,7 @@ class PortfolioActivity : AppCompatActivity(), View.OnClickListener, TextWatcher
         this.inputDescription.typeface = FontsHelper.INTER.regular(this)
 
         this.textBalance.text = GeneralHelper.currencyFormat(this.currentBalance)
-        this.textAchieved.text = this.wishlist.size.toString() + " Impian Tercapai"
+        this.textAchieved.text = "${result.size} Impian Tercapai"
 
         this.textDescription = findViewById(R.id.textDescription)
         this.textDescription.typeface = FontsHelper.INTER.medium(this)
@@ -138,7 +133,7 @@ class PortfolioActivity : AppCompatActivity(), View.OnClickListener, TextWatcher
         } else {
             this.cardBackground.isDrawingCacheEnabled = true
             this.cardBackground.setCardBackgroundColor(this.resources.getColor(android.R.color.darker_gray))
-            val b: Bitmap = cardBackground.getDrawingCache()
+            val b: Bitmap = cardBackground.drawingCache
             val random = Random().nextInt(100000 - 100 + 1) + 100000
             val root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
             val location = "/IMG-SHARE-$random-IMPIAN.png"
@@ -146,10 +141,10 @@ class PortfolioActivity : AppCompatActivity(), View.OnClickListener, TextWatcher
             val imageDir = File(root, location)
             try {
                 b.compress(Bitmap.CompressFormat.PNG, 95, FileOutputStream(path))
-                Log.d("SUCCESS SHARE IMAGE", "SUCCESS==============")
+                Log.d(PortfolioActivity::class.java.simpleName, "===== Success Share Image")
             } catch (e: FileNotFoundException) {
                 e.printStackTrace()
-                Log.d("FAIL SHARE IMAGE", "ERROR==============")
+                Log.d(PortfolioActivity::class.java.simpleName, "===== Err When Share Image ${e.message}")
             }
             val finalPath = FileInputStream(File(path))
             finalPath.close()
@@ -159,7 +154,7 @@ class PortfolioActivity : AppCompatActivity(), View.OnClickListener, TextWatcher
 //            i.putExtra(Intent.EXTRA_TEXT, shareMessages)
             i.putExtra(Intent.EXTRA_STREAM, Uri.parse(imageDir.absolutePath))
             i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            startActivity(Intent.createChooser(i, "Share Your Transaction"))
+            startActivity(Intent.createChooser(i, "Bagikan"))
             this.cardBackground.setCardBackgroundColor(this.resources.getColor(R.color.white))
         }
     }

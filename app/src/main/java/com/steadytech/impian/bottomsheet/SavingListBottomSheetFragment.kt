@@ -31,8 +31,6 @@ class SavingListBottomSheetFragment : BottomSheetDialogFragment() {
 
     private lateinit var recyclerView : RecyclerView
 
-    private lateinit var realm : Realm
-
     private lateinit var database : AppDatabase
 
     private lateinit var daoSaving : DaoSaving
@@ -63,6 +61,8 @@ class SavingListBottomSheetFragment : BottomSheetDialogFragment() {
         this.recyclerView = view.findViewById(R.id.recyclerList)
         this.recyclerView.addItemDecoration(DividerItemDecoration(this.activity, DividerItemDecoration.VERTICAL))
         this.recyclerView.layoutManager = LinearLayoutManager(this.activity, LinearLayoutManager.VERTICAL, false)
+
+        FontsHelper.INTER.bold(requireActivity(), this.textSaving)
     }
 
     private fun data(){

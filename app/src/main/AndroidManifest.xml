@@ -14,7 +14,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Impian">
-        <activity android:name=".activity.SettingActivity"></activity>
+        <activity
+            android:name=".activity.CalculatorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.NotificationActivity"
+            android:exported="false" />
+        <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.ProfileActivity" />
         <activity android:name=".activity.SignupActivity" />
         <activity android:name=".activity.SigninActivity" />

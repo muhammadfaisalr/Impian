@@ -1,26 +1,12 @@
 package com.steadytech.impian.activity
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.steadytech.impian.R
 import com.steadytech.impian.database.AppDatabase
@@ -29,11 +15,6 @@ import com.steadytech.impian.database.entity.EntityWishlist
 import com.steadytech.impian.databinding.ActivityProfileBinding
 import com.steadytech.impian.helper.*
 import com.steadytech.impian.model.firebase.User
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -85,7 +66,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
         this.reference = FirebaseDatabase.getInstance().getReference(Constant.DATABASE_REFERENCE.USER)
 
         this.savings = this.localDb.daoSaving().getAll() as ArrayList<EntitySaving>
-        this.wishlists = this.localDb.daoWishlist().getComplete(true) as ArrayList<EntityWishlist>
+        this.wishlists = this.localDb.daoWishlist().getByStatus(true) as ArrayList<EntityWishlist>
 
 
         this.textName = this.binding.textName
@@ -108,6 +89,9 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
         FontsHelper.INTER.light(this, this.textMotto)
 
         this.linearLogout.setOnClickListener(this)
+        this.linearPortfolio.setOnClickListener(this)
+
+        GeneralHelper.makeClickable(this, this.binding.linearCalculator)
     }
 
 
@@ -136,7 +120,21 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
             this.linearLogout -> {
                 this.logout()
             }
+            this.linearPortfolio -> {
+                this.portfolio()
+            }
+            this.binding.linearCalculator -> {
+                this.calculator()
+            }
         }
+    }
+
+    private fun calculator() {
+        startActivity(Intent(this, CalculatorActivity::class.java))
+    }
+
+    private fun portfolio() {
+        startActivity(Intent(this, PortfolioActivity::class.java))
     }
 
     private fun logout() {

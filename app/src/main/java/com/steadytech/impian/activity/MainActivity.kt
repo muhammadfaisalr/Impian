@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
@@ -22,6 +24,7 @@ import com.steadytech.impian.database.dao.DaoSaving
 import com.steadytech.impian.database.dao.DaoWishlist
 import com.steadytech.impian.database.entity.EntitySaving
 import com.steadytech.impian.database.entity.EntityWishlist
+import com.steadytech.impian.databinding.ActivityMainBinding
 import com.steadytech.impian.helper.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, TabLayout.OnTabSelectedListener {
@@ -58,9 +61,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TabLayout.OnTabS
 
     var amount = 0L
 
+    private lateinit var binding : ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        super.setContentView(R.layout.activity_main)
+        this.binding = ActivityMainBinding.inflate(this.layoutInflater)
+        super.setContentView(this.binding.root)
 
         this.supportActionBar!!.hide()
 
@@ -114,16 +120,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TabLayout.OnTabS
         this.textTitle = findViewById(R.id.textTitle)
         this.textTitle.typeface = FontsHelper.INTER.light(this)
 
-
         this.linearSettings = findViewById(R.id.linearSettings)
         this.linearAccount = findViewById(R.id.linearAccount)
 
         this.recyclerTodo = findViewById(R.id.recyclerTodo)
-        this.recyclerTodo.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        this.recyclerTodo.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         this.recyclerTodo.adapter = WishlistAdapter(wishlists, this)
+        this.recyclerTodo.addItemDecoration(DividerItemDecoration(this, RecyclerView.VERTICAL))
 
         this.cardAmount = findViewById(R.id.cardAmount)
+
+        FontsHelper.INTER.regular(this, this.binding.textAccount, this.binding.textNotification, this.binding.textSettings)
 
         FontsHelper.INTER.regular(
             this,
@@ -137,6 +144,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TabLayout.OnTabS
         } else {
             this.notEmpty()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(MainActivity::class.java.simpleName, "On Resume();")
+
+        this.wishlists = this.daoWishlist.getAll()
+        this.savings = this.daoSaving.getAll()
+        this.recyclerTodo.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        this.recyclerTodo.adapter = WishlistAdapter(wishlists, this)
     }
 
     override fun onClick(v: View?) {
@@ -192,7 +209,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TabLayout.OnTabS
                 this.notEmpty()
             }
         } else {
-            this.wishlists = this.daoWishlist.getComplete()
+            this.wishlists = this.daoWishlist.getByStatus()
             this.recyclerTodo.adapter = WishlistAdapter(this.wishlists, this)
             if (this.wishlists.isEmpty()) {
                 this.linearNotHaveGoals.visibility = View.VISIBLE
